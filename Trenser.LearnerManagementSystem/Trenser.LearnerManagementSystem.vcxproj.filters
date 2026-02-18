@@ -22,6 +22,9 @@
     <Filter Include="Utilities">
       <UniqueIdentifier>{516d2856-0667-48ec-8dc4-cbb4be2db71f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{587b5657-06a8-48dd-beef-13a85e9c198d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Trenser.LearnerManagementSystem.cpp">
@@ -40,7 +43,7 @@
       <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="Authentication.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -57,7 +60,7 @@
       <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="Authentication.h">
-      <Filter>Header Files</Filter>
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

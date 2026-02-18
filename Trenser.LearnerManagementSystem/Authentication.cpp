@@ -51,11 +51,11 @@ std::string Authentication::registerUser()
     }
     if (choice == 1)
     {
-        m_users.emplace_back(Student(username, password));
+        m_users.push_back(new Student(username, password));
     }
     else if (choice == 2)
     {
-        m_users.emplace_back(Instructor(username, password));
+        m_users.push_back(new Instructor(username, password));
     }
     statusMessage = "Registration successfull!";
     return statusMessage;
