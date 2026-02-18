@@ -17,7 +17,9 @@ public:
 	User(int userId, std::string userName, std::string password, std::string role) : m_userId(userId), m_userName(userName), m_password(password), m_role(role) {}
 	int getId();
 	std::string getUserName();
+	void setUserName(std::string userName);
 	std::string getPassword();
+	void setPassword(std::string password);
 	std::string getRole();
 	virtual ~User() {}
 };

@@ -45,6 +45,18 @@
     <ClCompile Include="Authentication.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="FileManager.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Course.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Enrollment.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Group.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="User.h">
@@ -61,6 +73,18 @@
     </ClInclude>
     <ClInclude Include="Authentication.h">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Course.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="FileManager.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Enrollment.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Group.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

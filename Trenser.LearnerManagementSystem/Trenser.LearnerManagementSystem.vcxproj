@@ -125,6 +125,10 @@
   <ItemGroup>
     <ClCompile Include="Admin.cpp" />
     <ClCompile Include="Authentication.cpp" />
+    <ClCompile Include="Course.cpp" />
+    <ClCompile Include="Enrollment.cpp" />
+    <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="Group.cpp" />
     <ClCompile Include="Instructor.cpp" />
     <ClCompile Include="Student.cpp" />
     <ClCompile Include="Trenser.LearnerManagementSystem.cpp" />
@@ -133,6 +137,10 @@
   <ItemGroup>
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Authentication.h" />
+    <ClInclude Include="Course.h" />
+    <ClInclude Include="Enrollment.h" />
+    <ClInclude Include="FileManager.h" />
+    <ClInclude Include="Group.h" />
     <ClInclude Include="Instructor.h" />
     <ClInclude Include="Student.h" />
     <ClInclude Include="User.h" />

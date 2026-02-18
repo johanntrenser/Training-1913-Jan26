@@ -3,6 +3,7 @@ using namespace std;
 
 User* Authentication::login()
 {
+    cout << "================LOGIN====================" << endl;
     string username = "";
     string password = "";
     cout << "Enter your username: ";

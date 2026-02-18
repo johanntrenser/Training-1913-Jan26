@@ -1,6 +1,6 @@
 #include "User.h"
 
-int User::m_nextUserId = 0;
+int User::m_nextUserId = 1;
 
 int User::getId()
 {
@@ -12,9 +12,19 @@ std::string User::getUserName()
     return m_userName;
 }
 
+void User::setUserName(std::string userName)
+{
+    m_userName = userName;
+}
+
 std::string User::getPassword()
 {
     return m_password;
+}
+
+void User::setPassword(std::string password)
+{
+    m_password = password;
 }
 
 std::string User::getRole()                
