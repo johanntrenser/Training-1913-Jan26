@@ -10,11 +10,11 @@ using namespace std;
 
 int main()
 {
-	const std::string USER_FILE_PATH = "C:\\Users\\1913\\Desktop\\Training-1913-Jan26\\files\\users.txt";
-	const std::string COURSE_FILE_PATH = "";
-	const std::string GROUPS_FILE_PATH = "";
-	const std::string ENROLLMENT_FILE_PATH = "";
-	const std::string ID_FILE_PATH = "";
+	const std::string USER_FILE_PATH = "users.txt";
+	const std::string COURSE_FILE_PATH = "courses.txt";
+	const std::string GROUPS_FILE_PATH = "groups.txt";
+	const std::string ENROLLMENT_FILE_PATH = "enrollments.txt";
+	const std::string ID_FILE_PATH = "id.txt";
 	FileManager::setFilePaths(USER_FILE_PATH, COURSE_FILE_PATH, GROUPS_FILE_PATH, ENROLLMENT_FILE_PATH, ID_FILE_PATH);
 	Authentication& authentication = Authentication::getInstance();
 	shared_ptr<LMSController> lmsController = nullptr;

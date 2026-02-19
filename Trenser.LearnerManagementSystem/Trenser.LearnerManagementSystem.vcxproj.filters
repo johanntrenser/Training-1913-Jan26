@@ -25,7 +25,7 @@
     <Filter Include="controller">
       <UniqueIdentifier>{52987b0f-442f-4ef6-b773-57a26ef7b6ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="view">
+    <Filter Include="View">
       <UniqueIdentifier>{861f214a-0ac6-41e7-9f55-93004a87d700}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -64,7 +64,7 @@
       <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="Menu.cpp">
-      <Filter>view</Filter>
+      <Filter>View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,7 +99,7 @@
       <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
-      <Filter>view</Filter>
+      <Filter>View</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
