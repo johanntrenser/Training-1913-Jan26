@@ -22,12 +22,12 @@ void Group::setGroupName(std::string groupName)
     m_groupName = groupName;
 }
 
-std::vector<int>& Group::getStudentsInGroup()
+std::vector<User*>& Group::getStudentsInGroup()
 {
     return m_students;
 }
 
-void Group::addStudentToGroup(int studentId)
+void Group::addStudentToGroup(User* student)
 {
-    m_students.push_back(studentId);
+    m_students.push_back(student);
 }

@@ -130,6 +130,8 @@
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Group.cpp" />
     <ClCompile Include="Instructor.cpp" />
+    <ClCompile Include="LMSController.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Student.cpp" />
     <ClCompile Include="Trenser.LearnerManagementSystem.cpp" />
     <ClCompile Include="User.cpp" />
@@ -142,6 +144,8 @@
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="Group.h" />
     <ClInclude Include="Instructor.h" />
+    <ClInclude Include="LMSController.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Student.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>

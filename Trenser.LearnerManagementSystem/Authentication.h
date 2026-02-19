@@ -1,18 +1,27 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <sstream>
 #pragma once
 #include "User.h"
 #include "Student.h"
 #include "Instructor.h"
+#include "Admin.h"
+#include "FileManager.h"
 
 class Authentication
 {
 private:
 	std::vector<User*> m_users;    //User pointer is required to store child objects
-public:
 	Authentication() = default;
+public:
 	User* login();
 	std::string registerUser();
-	~Authentication() = default;
+	void addUser(User* user);
+	bool loadUsersFromFile();
+	bool saveUsersToFile();
+	Authentication(const Authentication&) = delete;
+	Authentication& operator=(const Authentication&) = delete;
+	static Authentication& getInstance();
 };
 

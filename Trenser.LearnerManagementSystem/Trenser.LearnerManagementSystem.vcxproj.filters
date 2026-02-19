@@ -19,11 +19,14 @@
     <Filter Include="Files">
       <UniqueIdentifier>{90a27088-2e5e-47bf-974e-e3a8831010cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utilities">
-      <UniqueIdentifier>{516d2856-0667-48ec-8dc4-cbb4be2db71f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utility">
       <UniqueIdentifier>{587b5657-06a8-48dd-beef-13a85e9c198d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="controller">
+      <UniqueIdentifier>{52987b0f-442f-4ef6-b773-57a26ef7b6ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="view">
+      <UniqueIdentifier>{861f214a-0ac6-41e7-9f55-93004a87d700}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,8 +57,14 @@
     <ClCompile Include="Enrollment.cpp">
       <Filter>Models</Filter>
     </ClCompile>
+    <ClCompile Include="LMSController.cpp">
+      <Filter>controller</Filter>
+    </ClCompile>
     <ClCompile Include="Group.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>view</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,8 +92,14 @@
     <ClInclude Include="Enrollment.h">
       <Filter>Models</Filter>
     </ClInclude>
+    <ClInclude Include="LMSController.h">
+      <Filter>controller</Filter>
+    </ClInclude>
     <ClInclude Include="Group.h">
-      <Filter>Header Files</Filter>
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>view</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

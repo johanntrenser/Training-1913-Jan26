@@ -1,18 +1,21 @@
 #include <string>
 #pragma once
+#include "User.h"
+#include "Group.h"
+#include "Course.h"
 class Enrollment
 {
 private:
-	int m_studentId;
-	int m_courseId;
+	User* m_student;
+	Course* m_course;
 	int m_numberOfCompletedModules;
 	int m_progress;
 	std::string m_grade;
-	int m_groupId;
+	Group* m_group;
 public:
-	Enrollment() : m_studentId(0), m_courseId(0), m_numberOfCompletedModules(0), m_progress(0), m_grade(""), m_groupId(0) {}
-	Enrollment(int studentId, int courseId, int numberOfCompletedModules, int progress, std::string grade, int groupId) : 
-		m_studentId(studentId), m_courseId(courseId), m_numberOfCompletedModules(numberOfCompletedModules), m_progress(progress), m_grade(grade), m_groupId(groupId) {}
+	Enrollment() : m_student(nullptr), m_course(nullptr), m_numberOfCompletedModules(0), m_progress(0), m_grade(""), m_group(nullptr) {}
+	Enrollment(User* student, Course* course, int numberOfCompletedModules, int progress, std::string grade, Group* group) : 
+		m_student(student), m_course(course), m_numberOfCompletedModules(numberOfCompletedModules), m_progress(progress), m_grade(grade), m_group(group) {}
 	~Enrollment() = default;
 };
 

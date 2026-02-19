@@ -9,6 +9,7 @@ User* Authentication::login()
     cout << "Enter your username: ";
     cin >> username;
     cout << "Enter your password: ";
+    cin >> password;
     if (username.empty() || password.empty())
     {
         cout << "Username or Password cannot be empty!" << endl;
@@ -60,4 +61,73 @@ std::string Authentication::registerUser()
     }
     statusMessage = "Registration successfull!";
     return statusMessage;
+}
+
+void Authentication::addUser(User* user)
+{
+    m_users.push_back(user);
+}
+
+bool Authentication::loadUsersFromFile()
+{
+    ifstream fileReader(FileManager::m_userFilePath, ios::in);
+    if (!fileReader.is_open())
+    {
+        return false;
+    }
+    fileReader.clear();
+    fileReader.seekg(0, ios::beg);
+    bool skipHeader = true;
+    string currentLine;
+    while (getline(fileReader, currentLine))
+    {
+        if (skipHeader)
+        {
+            skipHeader = false;
+            continue;
+        }
+        stringstream currentUser(currentLine);
+        string id, username, password, role;
+        getline(currentUser, id, ',');
+        getline(currentUser, username, ',');
+        getline(currentUser, password, ',');
+        getline(currentUser, role, ',');
+        if (role == "admin")
+        {
+            m_users.push_back(new Admin(stoi(id), username, password, role));
+        }
+        else if (role == "student")
+        {
+            m_users.push_back(new Student(stoi(id), username, password, role));
+        }
+        else if (role == "instructor")
+        {
+            m_users.push_back(new Instructor(stoi(id), username, password, role));
+        }
+    }
+    fileReader.close();
+    return true;
+}
+
+bool Authentication::saveUsersToFile()
+{
+    ofstream fileWriter(FileManager::m_userFilePath, ios::out | ios::trunc);
+    if (!fileWriter.is_open())
+    {
+        return false;
+    }
+    fileWriter << "ID,USERNAME,PASSWORD,ROLE" << endl;
+    for (vector<User*>::iterator iterator = m_users.begin(); iterator != m_users.end(); ++iterator)
+    {
+        fileWriter << (*iterator)->getId() << "," << (*iterator)->getUserName() << "," << (*iterator)->getPassword() << "," << (*iterator)->getRole();
+        fileWriter << endl;
+    } 
+    fileWriter.close();
+    return true;
+}
+
+Authentication& Authentication::getInstance()
+{
+    static Authentication instance;
+    return instance;
 }
