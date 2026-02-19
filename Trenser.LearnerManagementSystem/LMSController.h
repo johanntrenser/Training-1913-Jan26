@@ -10,13 +10,21 @@ class LMSController
 {
 private:
 	User* m_user;
-	std::vector<Course> m_courses;
-	std::vector<Group> m_groups;
-	std::vector<Enrollment> m_enrollments;
+	std::vector<std::shared_ptr<Course>> m_courses;
+	std::vector<std::shared_ptr<Group>> m_groups;
+	std::vector<std::shared_ptr<Enrollment>> m_enrollments;
 public:
 	LMSController() = default;
 	LMSController(User* user) : m_user(user) {}
 	~LMSController() = default;
 	std::string getUserRole();
+	void addCourse();
+	void addStudent();
+	void addInstructor();
+	void addAdministrator();
+	void removeStudent();
+	void removeInstructor();
+	void removeAdministrator();
+	bool writeIdsToFile();
 };
 
