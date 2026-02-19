@@ -1,0 +1,2 @@
+userId,groupId,courseId
+2,1,1

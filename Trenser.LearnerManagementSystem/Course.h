@@ -3,7 +3,6 @@
 class Course
 {
 private:
-	static int m_nextCourseId;
 	int m_courseId;
 	std::string m_title;
 	std::string m_deadline;
@@ -12,6 +11,7 @@ public:
 	Course() : m_courseId(0), m_title(""), m_deadline(""), m_totalNumberOfModules(0) {}
 	Course(std::string title, std::string deadline, int totalNumberOfModules) :
 		m_courseId(m_nextCourseId++), m_title(title), m_deadline(deadline), m_totalNumberOfModules(totalNumberOfModules) {}
+	static int m_nextCourseId;
 	int getCourseId();
 	void setCourseId(int courseId);
 	std::string getCourseTitle();

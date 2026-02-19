@@ -45,8 +45,10 @@ int main()
 				{
 					cout << "Login Successfull\n" << endl;
 					lmsController = make_shared<LMSController>(user);
+					lmsController->loadAllFiles();
 					Menu menu = Menu(lmsController);
 					menu.startSession();
+					lmsController->saveAllFiles();
 				}
 				else
 				{

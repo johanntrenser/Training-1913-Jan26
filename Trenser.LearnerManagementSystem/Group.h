@@ -7,7 +7,6 @@
 class Group
 {
 private:
-	static int m_nextGroupId;
 	int m_groupId;
 	std::string m_groupName;
 	std::weak_ptr<Course> m_course;
@@ -15,6 +14,7 @@ private:
 public:
 	Group() : m_groupId(0), m_groupName(""), m_students() {}
 	Group(std::string groupName, std::shared_ptr<Course> course) : m_groupId(m_nextGroupId++), m_groupName(groupName), m_course(course), m_students() {}
+	static int m_nextGroupId;
 	int getGroupId();
 	void setGroupId(int groupId);
 	std::string getGroupName();

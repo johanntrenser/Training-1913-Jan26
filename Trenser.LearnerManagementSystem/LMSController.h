@@ -6,6 +6,7 @@
 #include "Group.h"
 #include "Enrollment.h"
 #include "Course.h"
+#include "FileManager.h"
 class LMSController
 {
 private:
@@ -25,6 +26,7 @@ public:
 	void removeStudent();
 	void removeInstructor();
 	void removeAdministrator();
-	bool writeIdsToFile();
+	void loadAllFiles();
+	void saveAllFiles();
 };
 
