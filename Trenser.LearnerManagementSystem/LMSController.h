@@ -7,6 +7,8 @@
 #include "Enrollment.h"
 #include "Course.h"
 #include "FileManager.h"
+#include "Authentication.h"
+
 class LMSController
 {
 private:

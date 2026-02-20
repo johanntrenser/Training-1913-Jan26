@@ -1,3 +1,7 @@
-ID,USERNAME,PASSWORD,ROLE
-1,admin,admin,admin
-2,jissin,jissin,student
+ID,USERNAME,PASSWORD,ROLE,STATUS
+1,admin,admin,admin,active
+2,jissin,jissin,student,active
+3,johann,johann,instructor,active
+4,vasavan,vasavan,admin,active
+5,vasu,vasu,student,active
+6,domi,domi,instructor,active

@@ -31,3 +31,13 @@ std::string User::getRole()
 {
     return m_role;
 }
+
+std::string User::getStatus()
+{
+    return m_status;
+}
+
+void User::setStatus(std::string status)
+{
+    m_status = status;
+}

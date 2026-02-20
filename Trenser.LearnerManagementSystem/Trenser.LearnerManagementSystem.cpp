@@ -51,7 +51,7 @@ int main()
 				User* user = authentication.login();
 				if (user != nullptr)
 				{
-					cout << "Login Successfull\n" << endl;
+					cout << "Login Successfull!\n" << endl;
 					lmsController = make_shared<LMSController>(user);
 					Menu menu = Menu(lmsController);
 					menu.startSession();
