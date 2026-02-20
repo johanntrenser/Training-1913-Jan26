@@ -6,7 +6,7 @@ std::string FileManager::m_groupsFilePath = "";
 std::string FileManager::m_enrollmentFilePath = "";
 std::string FileManager::m_idFilePath = "";
 
-void FileManager::setFilePaths(std::string userFilePath, std::string courseFilePath, std::string groupsFilePath, std::string enrollmentFilePath, std::string idFilePath)
+void FileManager::setFilePaths(const std::string userFilePath,const std::string courseFilePath, const std::string groupsFilePath, const std::string enrollmentFilePath, const std::string idFilePath)
 {
 	m_userFilePath = userFilePath;
 	m_courseFilePath = courseFilePath;

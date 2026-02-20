@@ -15,7 +15,7 @@ public:
 	static std::string m_groupsFilePath;
 	static std::string m_enrollmentFilePath;
 	static std::string m_idFilePath;
-	static void setFilePaths(std::string userFilePath, std::string courseFilePath, std::string groupsFilePath, std::string enrollmentFilePath, std::string m_idFilePath);
+	static void setFilePaths(std::string userFilePath, std::string courseFilePath, std::string groupsFilePath, std::string enrollmentFilePath, std::string idFilePath);
 	static bool loadIdsFromFile();
 	static bool saveIdsToFile();
 };

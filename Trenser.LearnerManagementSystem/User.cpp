@@ -1,6 +1,6 @@
 #include "User.h"
 
-int User::m_nextUserId = 1;
+int User::m_nextUserId = 2;
 
 int User::getId()
 {
