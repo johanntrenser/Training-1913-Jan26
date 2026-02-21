@@ -1,6 +1,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <memory>
 #pragma once
 #include "User.h"
 #include "Course.h"
@@ -18,5 +19,7 @@ public:
 	static void setFilePaths(std::string userFilePath, std::string courseFilePath, std::string groupsFilePath, std::string enrollmentFilePath, std::string idFilePath);
 	static bool loadIdsFromFile();
 	static bool saveIdsToFile();
+	static bool loadCoursesFromFile(std::vector<std::shared_ptr<Course>>& courses);
+	static bool saveCoursesToFile(const std::vector<std::shared_ptr<Course>>& courses);
 };
 

@@ -64,7 +64,7 @@ void LMSController::addStudent()
 {
     Authentication& authentication = Authentication::getInstance();
     vector<User*> users = authentication.getUsers();
-    int choice;
+    int choice = 0;
     string username = "";
     string password = "";
     string name = "";
@@ -102,7 +102,7 @@ void LMSController::addInstructor()
 {
     Authentication& authentication = Authentication::getInstance();
     vector<User*> users = authentication.getUsers();
-    int choice;
+    int choice = 0;
     string username = "";
     string password = "";
     string name = "";
@@ -140,7 +140,7 @@ void LMSController::addAdministrator()
 {
     Authentication& authentication = Authentication::getInstance();
     vector<User*> users = authentication.getUsers();
-    int choice;
+    int choice = 0;
     string username = "";
     string password = "";
     string name = "";
@@ -184,36 +184,113 @@ void LMSController::removeInstructor()
 
 void LMSController::removeAdministrator()
 {
+    Authentication& authentication = Authentication::getInstance();
+    int choice = 0;
+    std::string userId;
+    int id;
+    listAdminstrators();
+    cout << "Enter user id of administrator to delete: ";
+    cin >> userId;
+    while (userId.length() < 2 || userId[0] != 'U'  || isdigit(stoi(userId.substr(1))))
+    {
+        cout << "Invalid user id! Please Enter a valid user id: ";
+        cin >> userId;
+    }
+    id = stoi(userId.substr(1)); //from 1st index
+    authentication.deleteUser(id);
 }
 
 void LMSController::listStudents()
 {
     Authentication& authentication = Authentication::getInstance();
     vector<User*> users = authentication.getUsers();
+    cout << "============STUDENTS LIST==========" << endl;
+    for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
+    {
+        if ((*iterator)->getRole() == "student" && (*iterator)->getStatus() != "inactive")
+        {
+            cout << "User id: U" << (*iterator)->getId() << endl;
+            cout << "Username: " << (*iterator)->getUserName() << endl;
+            cout << "Name: " << (*iterator)->getName() << endl;
+            cout << "Role: " << (*iterator)->getRole() << endl;
+            cout << "Status: " << (*iterator)->getStatus() << "\n" << endl;
+        }
+    }
+}
+
+void LMSController::listAdminstrators()
+{
+    Authentication& authentication = Authentication::getInstance();
+    vector<User*> users = authentication.getUsers();
+    cout << "============ADMISTRATORS LIST==========" << endl;
+    for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
+    {
+        if ((*iterator)->getRole() == "admin" && (*iterator)->getStatus() != "inactive")
+        {
+            cout << "User id: U" << (*iterator)->getId() << endl;
+            cout << "Username: " << (*iterator)->getUserName() << endl;
+            cout << "Name: " << (*iterator)->getName() << endl;
+            cout << "Role: " << (*iterator)->getRole() << endl;
+            cout << "Status: " << (*iterator)->getStatus() << "\n" << endl;
+        }
+    }
+}
+
+void LMSController::listInstructors()
+{
+    Authentication& authentication = Authentication::getInstance();
+    vector<User*> users = authentication.getUsers();
+    cout << "============INSTRUCTORS LIST==========" << endl;
+    for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
+    {
+        if ((*iterator)->getRole() == "instructor" && (*iterator)->getStatus() != "inactive")
+        {
+            cout << "User id: U" << (*iterator)->getId() << endl;
+            cout << "Username: " << (*iterator)->getUserName() << endl;
+            cout << "Name: " << (*iterator)->getName() << endl;
+            cout << "Role: " << (*iterator)->getRole() << endl;
+            cout << "Status: " << (*iterator)->getStatus() << "\n" << endl;
+        }
+    }
+}
+
+void LMSController::listAllUsers()
+{
+    Authentication& authentication = Authentication::getInstance();
+    vector<User*> users = authentication.getUsers();
+    cout << "============USERS LIST==========" << endl;
+    for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
+    {
+            cout << "User id: U" << (*iterator)->getId() << endl;
+            cout << "Username: " << (*iterator)->getUserName() << endl;
+            cout << "Name: " << (*iterator)->getName() << endl;
+            cout << "Role: " << (*iterator)->getRole() << endl;
+            cout << "Status: " << (*iterator)->getStatus() << "\n" << endl;
+    }
 }
 
 void LMSController::loadAllFiles()
 {
-    /*cout << "\nLoading Files............\n" << endl;
+    cout << "\nLoading datas from file........\n" << endl;
     if (!FileManager::loadIdsFromFile())
     {
         cout << "Failed to load ids from file!" << endl;
     }
-    else
+    if (!FileManager::loadCoursesFromFile(m_courses))
     {
-        cout << "Loaded ids from file successfully!" << endl;
-    }*/
+        cout << "Failed to load courses from file!" << endl;
+    }
 }
 
 void LMSController::saveAllFiles()
 {
-    /*cout << "\nSaving datas to file........\n" << endl;
+    cout << "\nSaving datas to file........\n" << endl;
     if (!FileManager::saveIdsToFile())
     {
         cout << "Failed to write ids to file!" << endl;
     }
-    else
+    if (!FileManager::saveCoursesToFile(m_courses))
     {
-        cout << "Saved ids to file successfully!" << endl;
-    }*/
+        cout << "Failed to write ids to file!" << endl;
+    }
 }

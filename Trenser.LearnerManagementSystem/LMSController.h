@@ -29,8 +29,9 @@ public:
 	void removeInstructor();
 	void removeAdministrator();
 	void listStudents();
-	void listTeachers();
+	void listAdminstrators();
 	void listInstructors();
+	void listAllUsers();
 	void loadAllFiles();
 	void saveAllFiles();
 };

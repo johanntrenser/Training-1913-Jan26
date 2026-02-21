@@ -77,6 +77,26 @@ void Authentication::addUser(User* user)
     m_users.push_back(user);
 }
 
+void Authentication::deleteUser(int userId)
+{
+    for (vector<User*>::iterator iterator = m_users.begin(); iterator != m_users.end(); ++iterator)
+    {
+        if (((*iterator)->getId() == userId))
+        {
+            if ((*iterator)->getId() == 1 || (*iterator)->getUserName() == "admin")
+            {
+                cout << "User doesnt have the access to delete this administrator user!" << endl;
+                return;
+            }
+            else
+            {
+                (*iterator)->setStatus("inactive");
+            }
+        }
+    }
+    cout << "Administrator user has been deleted!\n" << endl;
+}
+
 const vector<User*>& Authentication::getUsers() const
 {
     return m_users;

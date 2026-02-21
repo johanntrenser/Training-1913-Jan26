@@ -5,3 +5,4 @@ ID,USERNAME,NAME,PASSWORD,ROLE,STATUS
 4,vasavan,vasavan vasu,vasavan,admin,active
 5,vasu,vasu das,vasu,student,active
 6,domi,dominic,domi,instructor,active
+7,adminTwo,Administrator Two,adminTwo,admin,active

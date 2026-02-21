@@ -11,6 +11,9 @@ public:
 	Course() : m_courseId(0), m_title(""), m_deadline(""), m_totalNumberOfModules(0) {}
 	Course(std::string title, std::string deadline, int totalNumberOfModules) :
 		m_courseId(m_nextCourseId++), m_title(title), m_deadline(deadline), m_totalNumberOfModules(totalNumberOfModules) {}
+	Course(int courseId, std::string title, std::string deadline, int totalNumberOfModules) :
+		m_courseId(courseId), m_title(title), m_deadline(deadline), m_totalNumberOfModules(totalNumberOfModules) {
+	}
 	static int m_nextCourseId;
 	int getCourseId();
 	void setCourseId(int courseId);

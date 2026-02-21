@@ -18,6 +18,7 @@ public:
 	User* login();
 	std::string registerUser();
 	void addUser(User* user);
+	void deleteUser(int userId);
 	const std::vector<User*>& getUsers() const;
 	bool loadUsersFromFile();
 	bool saveUsersToFile();
