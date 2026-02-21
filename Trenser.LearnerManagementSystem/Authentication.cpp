@@ -17,7 +17,7 @@ User* Authentication::login()
     }
     for (vector<User*>::iterator iterator = m_users.begin(); iterator != m_users.end(); ++iterator)
     {
-        if (((*iterator)->getUserName() == username) && ((*iterator)->getPassword() == password) && ((*iterator)->getRole() != "inactive"))
+        if (((*iterator)->getUserName() == username) && ((*iterator)->getPassword() == password) && ((*iterator)->getStatus() != "inactive"))
         {
             return *iterator;
         }
@@ -30,6 +30,7 @@ std::string Authentication::registerUser()
     cout << "================REGISTER USER====================" << endl;
     string username = "";
     string password = "";
+    string name = "";
     string statusMessage = "";
     int choice = 0;
     cout << "Enter the username: ";
@@ -44,6 +45,14 @@ std::string Authentication::registerUser()
     }
     cout << "Enter your password: ";
     cin >> password;
+    cin.ignore(10000, '\n');
+    cout << "Enter name: ";
+    getline(cin, name);
+    while (name.empty())
+    {
+        cout << "Name cannot be empty! Please Enter name again: ";
+        getline(cin, name);
+    }
     cout << "Select Role:\n1.Student\n2.Instructor\nEnter role (1 - 2): ";
     cin >> choice;
     while (choice < 1 || choice > 2)
@@ -53,11 +62,11 @@ std::string Authentication::registerUser()
     }
     if (choice == 1)
     {
-        m_users.push_back(new Student(username, password));
+        m_users.push_back(new Student(username, name, password));
     }
     else if (choice == 2)
     {
-        m_users.push_back(new Instructor(username, password));
+        m_users.push_back(new Instructor(username, name, password));
     }
     statusMessage = "Registration successfull!";
     return statusMessage;
@@ -93,23 +102,24 @@ bool Authentication::loadUsersFromFile()
             continue;
         }
         stringstream currentUser(currentLine);
-        string id, username, password, role, status;
+        string id, username, name, password, role, status;
         getline(currentUser, id, ',');
         getline(currentUser, username, ',');
+        getline(currentUser, name, ',');
         getline(currentUser, password, ',');
         getline(currentUser, role, ',');
         getline(currentUser, status, ',');
         if (role == "admin")
         {
-            m_users.push_back(new Admin(stoi(id), username, password, role, status));
+            m_users.push_back(new Admin(stoi(id), username, name, password, role, status));
         }
         else if (role == "student")
         {
-            m_users.push_back(new Student(stoi(id), username, password, role, status));
+            m_users.push_back(new Student(stoi(id), username, name, password, role, status));
         }
         else if (role == "instructor")
         {
-            m_users.push_back(new Instructor(stoi(id), username, password, role, status));
+            m_users.push_back(new Instructor(stoi(id), username, name, password, role, status));
         }
     }
     fileReader.close();
@@ -123,10 +133,11 @@ bool Authentication::saveUsersToFile()
     {
         return false;
     }
-    fileWriter << "ID,USERNAME,PASSWORD,ROLE,STATUS" << endl;
+    fileWriter << "ID,USERNAME,NAME,PASSWORD,ROLE,STATUS" << endl;
     for (vector<User*>::iterator iterator = m_users.begin(); iterator != m_users.end(); ++iterator)
     {
-        fileWriter << (*iterator)->getId() << "," << (*iterator)->getUserName() << "," << (*iterator)->getPassword() << "," << (*iterator)->getRole() << "," << (*iterator)->getStatus();
+        fileWriter << (*iterator)->getId() << "," << (*iterator)->getUserName() << "," << (*iterator)->getName() << "," << (*iterator)->getPassword() << ","
+            << (*iterator)->getRole() << "," << (*iterator)->getStatus();
         fileWriter << endl;
     } 
     fileWriter.close();

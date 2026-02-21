@@ -24,6 +24,17 @@ void Menu::studentMenu()
 	while (isMenuActive)
 	{
 		cout << "===================STUDENT MENU===================" << endl;
+		cout << "\n1.Logout\nEnter choice: ";
+		cin >> choice;
+		while (choice != 1)
+		{
+			cout << "Invalid choice! Please select a valid option: " << endl;
+			cin >> choice;
+		}
+		if (choice == 1)
+		{
+			isMenuActive = false;
+		}
 	}
 }
 
@@ -34,6 +45,17 @@ void Menu::instructorMenu()
 	while (isMenuActive)
 	{
 		cout << "===================INSTRUCTOR MENU===================" << endl;
+		cout << "\n1.Logout\nEnter choice: ";
+		cin >> choice;
+		while (choice != 1)
+		{
+			cout << "Invalid choice! Please select a valid option: " << endl;
+			cin >> choice;
+		}
+		if (choice == 1)
+		{
+			isMenuActive = false;
+		}
 	}
 }
 

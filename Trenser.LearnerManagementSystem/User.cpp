@@ -17,6 +17,16 @@ void User::setUserName(std::string userName)
     m_userName = userName;
 }
 
+std::string User::getName()
+{
+    return m_name;
+}
+
+void User::setName(std::string name)
+{
+    m_name = name;
+}
+
 std::string User::getPassword()
 {
     return m_password;

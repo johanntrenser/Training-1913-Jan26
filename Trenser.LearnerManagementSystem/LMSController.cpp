@@ -67,6 +67,7 @@ void LMSController::addStudent()
     int choice;
     string username = "";
     string password = "";
+    string name = "";
     bool isExisting = true;
     while (isExisting)
     {
@@ -85,7 +86,15 @@ void LMSController::addStudent()
     }
     cout << "Enter your password: ";
     cin >> password;
-    authentication.addUser(new Student(username, password));
+    cin.ignore(10000, '\n');
+    cout << "Enter student name: ";
+    getline(cin, name);
+    while (name.empty())
+    {
+        cout << "Name cannot be empty! Please Enter name again: ";
+        getline(cin, name);
+    }
+    authentication.addUser(new Student(username, name, password));
     cout << "Student added successfully!\n" << endl;
 }
 
@@ -96,6 +105,7 @@ void LMSController::addInstructor()
     int choice;
     string username = "";
     string password = "";
+    string name = "";
     bool isExisting = true;
     while (isExisting)
     {
@@ -112,9 +122,17 @@ void LMSController::addInstructor()
             }
         }
     }
-    cout << "Enter your password: ";
+    cout << "Enter  password: ";
     cin >> password;
-    authentication.addUser(new Instructor(username, password));
+    cin.ignore(10000, '\n');
+    cout << "Enter instructor name: ";
+    getline(cin, name);
+    while (name.empty())
+    {
+        cout << "Name cannot be empty! Please Enter name again: ";
+        getline(cin, name);
+    }
+    authentication.addUser(new Instructor(username, name, password));
     cout << "Instructor added successfully!\n" << endl;
 }
 
@@ -125,6 +143,7 @@ void LMSController::addAdministrator()
     int choice;
     string username = "";
     string password = "";
+    string name = "";
     bool isExisting = true;
     while (isExisting)
     {
@@ -141,9 +160,17 @@ void LMSController::addAdministrator()
             }
         }
     }
-    cout << "Enter your password: ";
+    cout << "Enter password: ";
     cin >> password;
-    authentication.addUser(new Admin(username, password));
+    cin.ignore(10000, '\n');
+    cout << "Enter administrator name: ";
+    getline(cin, name);
+    while (name.empty())
+    {
+        cout << "Name cannot be empty! Please Enter name again: ";
+        getline(cin, name);
+    }
+    authentication.addUser(new Admin(username, name, password));
     cout << "Admin added successfully!\n" << endl;
 }
 
@@ -157,6 +184,12 @@ void LMSController::removeInstructor()
 
 void LMSController::removeAdministrator()
 {
+}
+
+void LMSController::listStudents()
+{
+    Authentication& authentication = Authentication::getInstance();
+    vector<User*> users = authentication.getUsers();
 }
 
 void LMSController::loadAllFiles()

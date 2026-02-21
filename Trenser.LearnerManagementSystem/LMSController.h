@@ -28,6 +28,9 @@ public:
 	void removeStudent();
 	void removeInstructor();
 	void removeAdministrator();
+	void listStudents();
+	void listTeachers();
+	void listInstructors();
 	void loadAllFiles();
 	void saveAllFiles();
 };
