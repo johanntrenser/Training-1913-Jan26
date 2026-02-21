@@ -32,6 +32,14 @@ public:
 	void listAdminstrators();
 	void listInstructors();
 	void listAllUsers();
+	void listStudentNames();
+	void listCourses();
+	void listGroups();
+	void enrollStudentToCourse();
+	void enrollStudentToGroup();
+	void addGroup();
+	void removeGroup();
+	bool IsStudentEnrolledInCourse(int studentId, int courseId);
 	void loadAllFiles();
 	void saveAllFiles();
 };

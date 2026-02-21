@@ -1,2 +1,2 @@
-userId,groupId,courseId
-8,1,1
+userId,groupId,courseId,enrollmentId
+8,1,1,1

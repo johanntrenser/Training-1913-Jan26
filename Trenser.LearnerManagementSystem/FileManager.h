@@ -6,6 +6,7 @@
 #include "User.h"
 #include "Course.h"
 #include "Group.h"
+#include "Enrollment.h"
 class FileManager
 {
 private:

@@ -31,14 +31,20 @@ bool FileManager::loadIdsFromFile()
 			skipHeader = false;
 			continue;
 		}
+		if (currentLine.empty()) //empty lines after content
+		{
+			continue;
+		}
 		std::stringstream currentIds(currentLine);
-		std::string userId, groupId, courseId;
+		std::string userId, groupId, courseId, enrollmentId;
 		getline(currentIds, userId, ',');
 		getline(currentIds, groupId, ',');
 		getline(currentIds, courseId, ',');
+		getline(currentIds, enrollmentId, ',');
 		User::m_nextUserId = std::stoi(userId);
 		Group::m_nextGroupId = std::stoi(groupId);
 		Course::m_nextCourseId = std::stoi(courseId);
+		Enrollment::m_nextEnrollmentId = std::stoi(enrollmentId);
 	}
 	idFileReader.close();
 	return true;
@@ -51,8 +57,8 @@ bool FileManager::saveIdsToFile()
 	{
 		return false;
 	}
-	idFileWriter << "userId,groupId,courseId" << std::endl;
-	idFileWriter << User::m_nextUserId << "," << Group::m_nextGroupId << "," << Course::m_nextCourseId;
+	idFileWriter << "userId,groupId,courseId,enrollmentId" << std::endl;
+	idFileWriter << User::m_nextUserId << "," << Group::m_nextGroupId << "," << Course::m_nextCourseId << "," << Enrollment::m_nextEnrollmentId;
 	idFileWriter << std::endl;
 	idFileWriter.close();
 	return true;
