@@ -24,14 +24,29 @@ void Menu::studentMenu()
 	while (isMenuActive)
 	{
 		cout << "===================STUDENT MENU===================" << endl;
-		cout << "\n1.Logout\nEnter choice: ";
+		cout << "1.  Enroll to Course\n"
+			 << "2.  View Enrolled Courses\n"
+			 << "3.  Grade Enrolled Groups\n"
+			 << "4.  View Grades\n"
+			 << "5.  Complete Course Chapter\n"
+			 << "6.  View Students in Group\n"
+			 << "7.  Logout\n"
+			 << "Enter your choice (1 - 7): ";
 		cin >> choice;
-		while (choice != 1)
+		while (choice < 1 || choice > 11)
 		{
 			cout << "Invalid choice! Please select a valid option: " << endl;
 			cin >> choice;
 		}
 		if (choice == 1)
+		{
+			m_lmsController->enrollToCourse();
+		}
+		else if (choice == 2)
+		{
+			m_lmsController->listEnrolledCourses();
+		}
+		else if (choice == 7)
 		{
 			isMenuActive = false;
 		}

@@ -474,6 +474,31 @@ void LMSController::listStudentsGradeInCourse()
     cout << endl;
 }
 
+void LMSController::listEnrolledCourses()
+{
+    bool found = false;
+    cout << "\n============Enrolled Course List=============\n";
+    for (vector<shared_ptr<Enrollment>>::iterator iterator = m_enrollments.begin(); iterator != m_enrollments.end(); ++iterator)
+    {
+        if ((*iterator)->getEnrolledStudentId() == m_user->getId())
+        {
+            int courseId = (*iterator)->getEnrolledCourseId();
+            shared_ptr<Course> course = getCourse(courseId);
+            if (course == nullptr)
+            {
+                continue;
+            }
+            cout << "C" << course->getCourseId() << ". " << course->getCourseTitle() << endl;
+            found = true;
+        }
+    }
+    if (!found)
+    {
+        cout << "No Enrolled Courses Found!\n" << endl;
+    }
+    cout << endl;
+}
+
 std::shared_ptr<Course> LMSController::getCourse(int courseId)
 {
     for (vector<shared_ptr<Course>>::iterator iterator = m_courses.begin(); iterator != m_courses.end(); ++iterator)
@@ -729,6 +754,42 @@ void LMSController::enrollStudentToGroup()
     m_enrollments.push_back(make_shared<Enrollment>(user, course, 0, 0, "NIL", group));
     group->addStudentToGroup(user);
     cout << "Student enrolled to group successfully!\n" << endl;
+}
+
+void LMSController::enrollToCourse()
+{
+    string courseId;
+    int studentId = m_user->getId();
+    int convertedCourseId = 0;
+    listCourses();
+    if (m_courses.empty())
+    {
+        cout << "No courses available!\n";
+        return;
+    }
+    cout << "Enter course id of course to add to: ";
+    cin >> courseId;
+    cin.ignore(10000, '\n');
+    while (courseId.length() < 2 || courseId[0] != 'C' || !all_of(courseId.begin() + 1, courseId.end(), ::isdigit))
+    {
+        cout << "Invalid course id! Please Enter a valid course id: ";
+        cin >> courseId;
+        cin.ignore(10000, '\n');
+    }
+    convertedCourseId = stoi(courseId.substr(1));
+    if (IsStudentEnrolledInCourse(studentId, convertedCourseId))
+    {
+        cout << "You are already enrolled in this course!\n";
+        return;
+    }
+    shared_ptr<Course> course = getCourse(convertedCourseId);
+    if (!course)
+    {
+        cout << "Course not found!\n";
+        return;
+    }
+    m_enrollments.push_back(make_shared<Enrollment>(m_user, course, 0, 0, "NIL", nullptr));
+    cout << "Enrolled to course " << course->getCourseTitle() << " successfully!\n" << endl;
 }
 
 int LMSController::getNumberOfStudents()
