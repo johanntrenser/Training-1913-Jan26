@@ -33,6 +33,26 @@ int Enrollment::getEnrolledGroupId()
 	}
 }
 
+int Enrollment::getEnrollmentId()
+{
+	return m_enrollmentId;
+}
+
+int Enrollment::getProgress()
+{
+	return m_progress;
+}
+
+std::string Enrollment::getGrade()
+{
+	return m_grade;
+}
+
+int Enrollment::getNumberOfCompletedModules()
+{
+	return m_numberOfCompletedModules;
+}
+
 void Enrollment::setGroup(std::shared_ptr<Group> group)
 {
 	m_group = group;

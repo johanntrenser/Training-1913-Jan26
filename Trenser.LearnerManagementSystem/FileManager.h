@@ -28,5 +28,7 @@ public:
 	static bool saveCoursesToFile(const std::vector<std::shared_ptr<Course>>& courses);
 	static bool loadGroupsFromFile(std::vector<std::shared_ptr<Group>>& groups, LMSController& lmsController);
 	static bool saveGroupsToFile(const std::vector<std::shared_ptr<Group>>& groups);
+	static bool loadEnrollmentsFromFile(std::vector<std::shared_ptr<Enrollment>>& enrollments, LMSController& lmsController);
+	static bool saveEnrollmentsToFile(const std::vector<std::shared_ptr<Enrollment>>& enrollments);
 };
 

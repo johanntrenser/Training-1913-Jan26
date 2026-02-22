@@ -36,6 +36,10 @@ public:
 	int getEnrolledStudentId();
 	int getEnrolledCourseId();
 	int getEnrolledGroupId();
+	int getEnrollmentId();
+	int getProgress();
+	std::string getGrade();
+	int getNumberOfCompletedModules();
 	void setGroup(std::shared_ptr<Group> group);
 	~Enrollment() = default;
 };

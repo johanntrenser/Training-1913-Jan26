@@ -1,1 +1,3 @@
 groupId,groupName,courseId,studentIds
+G1,mat101,2,U5
+G3,english102,1,

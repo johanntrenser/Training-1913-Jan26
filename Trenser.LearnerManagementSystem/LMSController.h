@@ -36,6 +36,8 @@ public:
 	void listStudentNames();
 	void listCourses();
 	void listGroups();
+	void listStudentsInGroup();
+	void listStudentsProgressInCourse();
 	std::shared_ptr<Course> getCourse(int courseId);
 	User* getUser(int userId);
 	std::shared_ptr<Group> getGroup(int groupId);
@@ -44,6 +46,8 @@ public:
 	void enrollStudentToCourse();
 	void enrollStudentToGroup();
 	int getNumberOfStudents();
+	int getStudentEnrollmentsCount(int studentId);
+	int getStudentPendingEnrollmentsCount(int studentId);
 	bool IsStudentEnrolledInCourse(int studentId, int courseId);
 	bool IsStudentEnrolledInGroup(int studentId, int groupId);
 	bool IsStudentEnrolledInGroupsCourse(int studentId, int groupId);

@@ -51,13 +51,14 @@ void Menu::instructorMenu()
 			<< "4.  View Student Grades\n"
 			<< "5.  View Student Progress\n"
 			<< "6.  Add Group\n"
-			<< "7.  View Groups\n"
-			<< "8.  List All Students\n"
-			<< "9.  View Students in Group\n"
-			<< "9.  Logout\n"
-			<< "Enter your choice (1 - 9): ";
+			<< "7.  Remove Group\n"
+			<< "8.  View Groups\n"
+			<< "9.  List All Students\n"
+			<< "10. View Students in Group\n"
+			<< "11. Logout\n"
+			<< "Enter your choice (1 - 11): ";
 		cin >> choice;
-		while (choice < 1 || choice > 9)
+		while (choice < 1 || choice > 11)
 		{
 			cout << "Invalid choice! Please select a valid option : " << endl;
 			cin >> choice;
@@ -89,17 +90,25 @@ void Menu::instructorMenu()
 		}
 		else if (choice == 6)
 		{
-			m_lmsController->removeInstructor();
+			m_lmsController->addGroup();
 		}
 		else if (choice == 7)
 		{
-			m_lmsController->addCourse();
+			m_lmsController->removeGroup();
 		}
 		else if (choice == 8)
 		{
-			m_lmsController->listStudents();
+			m_lmsController->listGroups();
 		}
 		else if (choice == 9)
+		{
+			m_lmsController->listStudents();
+		}
+		else if (choice == 10)
+		{
+			m_lmsController->listStudentsInGroup();
+		}
+		else if (choice == 11)
 		{
 			isMenuActive = false;
 		}

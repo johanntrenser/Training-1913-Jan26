@@ -176,16 +176,55 @@ void LMSController::addAdministrator()
 
 void LMSController::removeStudent()
 {
+    Authentication& authentication = Authentication::getInstance();
+    string userId;
+    int convertedUserId = 0;
+    listStudentNames();
+    if (getNumberOfStudents() == 0)
+    {
+        cout << "No students available!\n";
+        return;
+    }
+    cout << "Enter user id of student to enroll: ";
+    cin >> userId;
+    cin.ignore(10000, '\n');
+    while (userId.length() < 2 || userId[0] != 'U' || !all_of(userId.begin() + 1, userId.end(), ::isdigit))
+    {
+        cout << "Invalid user id! Please Enter a valid user id: ";
+        cin >> userId;
+        cin.ignore(10000, '\n');
+    }
+    convertedUserId = stoi(userId.substr(1));
+    if (getStudentPendingEnrollmentsCount(convertedUserId) > 0)
+    {
+        cout << "Student cannot be removed! Student still has pending courses\n" << endl;
+    }
+    else
+    {
+        authentication.deleteUser(convertedUserId);
+    }
 }
 
 void LMSController::removeInstructor()
 {
+    Authentication& authentication = Authentication::getInstance();
+    std::string userId;
+    int id;
+    listInstructors();
+    cout << "Enter user id of instructor to delete: ";
+    cin >> userId;
+    while (userId.length() < 2 || userId[0] != 'U' || !all_of(userId.begin() + 1, userId.end(), ::isdigit))
+    {
+        cout << "Invalid user id! Please Enter a valid user id: ";
+        cin >> userId;
+    }
+    id = stoi(userId.substr(1));
+    authentication.deleteUser(id);
 }
 
 void LMSController::removeAdministrator()
 {
     Authentication& authentication = Authentication::getInstance();
-    int choice = 0;
     std::string userId;
     int id;
     listAdminstrators();
@@ -307,6 +346,48 @@ void LMSController::listGroups()
     }
 }
 
+void LMSController::listStudentsInGroup()
+{
+    string groupId;
+    int convertedGroupId = 0;
+    listGroups();
+    if (m_groups.empty())
+    {
+        cout << "No groups available!\n";
+        return;
+    }
+    cout << "Enter group id of group to show students: ";
+    cin >> groupId;
+    while (groupId.length() < 2 ||  groupId[0] != 'G' || !all_of(groupId.begin() + 1, groupId.end(), ::isdigit))
+    {
+        cout << "Invalid group id! Please Enter a valid group id: ";
+        cin >> groupId;
+        cin.ignore(10000, '\n');
+    }
+    convertedGroupId = stoi(groupId.substr(1));
+    shared_ptr<Group> group = getGroup(convertedGroupId);
+    if (group == nullptr)
+    {
+        cout << "Group not found!\n";
+        return;
+    }
+    const vector<User*>& students = group->getStudentsInGroup();
+    if (students.size() == 0)
+    {
+        cout << "No Students available!\n" << endl;
+        return;
+    }
+    for (vector<User*>::const_iterator iterator = students.begin(); iterator != students.end(); ++iterator)
+    {
+        if ((*iterator)->getStatus() != "inactive")
+        {
+            cout << "User id: U" << (*iterator)->getId() << endl;
+            cout << "Username: " << (*iterator)->getUserName() << endl;
+            cout << "Name: " << (*iterator)->getName() << "\n" << endl;
+        }
+    }
+}
+
 std::shared_ptr<Course> LMSController::getCourse(int courseId)
 {
     for (vector<shared_ptr<Course>>::iterator iterator = m_courses.begin(); iterator != m_courses.end(); ++iterator)
@@ -387,6 +468,47 @@ void LMSController::addGroup()
     }
     m_groups.push_back(make_shared<Group>(groupName, course));
     cout << "Group Added Successfully!" << endl;
+}
+
+void LMSController::removeGroup()
+{
+    string groupId;
+    int convertedGroupId = 0;
+    listGroups();
+    if (m_groups.empty())
+    {
+        cout << "No groups available!\n";
+        return;
+    }
+    cout << "Enter group id of group to remove: ";
+    cin >> groupId;
+    while (groupId.length() < 2 || groupId[0] != 'G' || !all_of(groupId.begin() + 1, groupId.end(), ::isdigit))
+    {
+        cout << "Invalid group id! Please Enter a valid group id: ";
+        cin >> groupId;
+        cin.ignore(10000, '\n');
+    }
+    convertedGroupId = stoi(groupId.substr(1));
+    shared_ptr<Group> group = getGroup(convertedGroupId);
+    if (group == nullptr)
+    {
+        cout << "Group not found!\n";
+        return;
+    }
+    if (group->getCountOfStudentsInGroup() > 0)
+    {
+        cout << "Group cannot be removed! Contains enrolled students\n" << endl;
+        return;
+    }
+    for (vector<shared_ptr<Group>>::iterator iterator = m_groups.begin(); iterator != m_groups.end(); ++iterator)
+    {
+        if ((*iterator)->getGroupId() == convertedGroupId)
+        {
+            m_groups.erase(iterator);
+            break;
+        }
+    }
+    cout << "Group deleted successfully!\n" << endl;
 }
 
 void LMSController::enrollStudentToCourse()
@@ -538,6 +660,36 @@ int LMSController::getNumberOfStudents()
     return studentCount;
 }
 
+int LMSController::getStudentEnrollmentsCount(int studentId)
+{
+    int enrollmentCount = 0;
+    for (vector<shared_ptr<Enrollment>>::iterator iterator = m_enrollments.begin(); iterator != m_enrollments.end(); ++iterator)
+    {
+        if ((*iterator)->getEnrolledStudentId() == studentId)
+        {
+            enrollmentCount++;
+        }
+    }
+    return enrollmentCount;
+}
+
+int LMSController::getStudentPendingEnrollmentsCount(int studentId)
+{
+    int pendingEnrollmentCount = 0;
+    for (vector<shared_ptr<Enrollment>>::iterator iterator = m_enrollments.begin(); iterator != m_enrollments.end(); ++iterator)
+    {
+        if ((*iterator)->getEnrolledStudentId() == studentId)
+        {
+            if ((*iterator)->getProgress() < 100)
+            {
+                pendingEnrollmentCount++;
+            }
+            
+        }
+    }
+    return pendingEnrollmentCount;
+}
+
 bool LMSController::IsStudentEnrolledInCourse(int studentId, int courseId)
 {
     for (vector<shared_ptr<Enrollment>>::iterator iterator = m_enrollments.begin(); iterator != m_enrollments.end(); ++iterator)
@@ -610,6 +762,10 @@ void LMSController::loadAllFiles()
     {
         cout << "Failed to load groups from file!" << endl;
     }
+    if (!FileManager::loadEnrollmentsFromFile(m_enrollments, *this))
+    {
+        cout << "Failed to load enrollments from file!" << endl;
+    }
 }
 
 void LMSController::saveAllFiles()
@@ -626,5 +782,9 @@ void LMSController::saveAllFiles()
     if (!FileManager::saveGroupsToFile(m_groups))
     {
         cout << "Failed to write groups to file!" << endl;
+    }
+    if (!FileManager::saveEnrollmentsToFile(m_enrollments))
+    {
+        cout << "Failed to write enrollments to file!" << endl;
     }
 }

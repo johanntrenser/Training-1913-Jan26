@@ -37,6 +37,18 @@ std::vector<User*>& Group::getStudentsInGroup()
     return m_students;
 }
 
+int Group::getCountOfStudentsInGroup()
+{
+    if (!m_students.empty())
+    {
+        return m_students.size();
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 void Group::addStudentToGroup(User* student)
 {
     m_students.push_back(student);

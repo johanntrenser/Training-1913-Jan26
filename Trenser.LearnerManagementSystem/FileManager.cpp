@@ -82,6 +82,10 @@ bool FileManager::loadCoursesFromFile(std::vector<std::shared_ptr<Course>>& cour
 			skipHeader = false;
 			continue;
 		}
+		if (currentLine.empty()) //empty lines after content
+		{
+			continue;
+		}
 		std::stringstream currentCourse(currentLine);
 		std::string id, title, deadline, totalNumberOfModules;
 		getline(currentCourse, id, ',');
@@ -130,13 +134,17 @@ bool FileManager::loadGroupsFromFile(std::vector<std::shared_ptr<Group>>& groups
 			skipHeader = false;
 			continue;
 		}
+		if (currentLine.empty()) //empty lines after content
+		{
+			continue;
+		}
 		std::stringstream currentGroup(currentLine);
 		std::string groupIdString, name, courseIdString, studentIdsString;
 		getline(currentGroup, groupIdString, ',');
 		getline(currentGroup, name, ',');
 		getline(currentGroup, courseIdString, ',');
 		getline(currentGroup, studentIdsString, ',');
-		std::shared_ptr<Course> course = lmsController.getCourse(stoi(courseIdString));
+		std::shared_ptr<Course> course = lmsController.getCourse(stoi(courseIdString.substr(1)));
 		if (course == nullptr)
 		{
 			std::cout << "Course not found for this group!\n"; 
@@ -151,7 +159,7 @@ bool FileManager::loadGroupsFromFile(std::vector<std::shared_ptr<Group>>& groups
 		{
 			if (!studentIdString.empty())
 			{
-				User* student = lmsController.getUser(std::stoi(studentIdString));
+				User* student = lmsController.getUser(std::stoi(studentIdString.substr(1)));
 				if (student != nullptr)
 				{
 					group->addStudentToGroup(student);
@@ -186,12 +194,104 @@ bool FileManager::saveGroupsToFile(const std::vector<std::shared_ptr<Group>>& gr
 			User* student = *userIterator;
 			if (student != nullptr)
 			{
-				fileWriter << student->getId();
+				fileWriter << "U" << student->getId();
 				if (std::next(userIterator) != students.end())
 				{
 					fileWriter << ";";
 				}
 			}
+		}
+		fileWriter << std::endl;
+	}
+	fileWriter.close();
+	return true;
+}
+
+bool FileManager::loadEnrollmentsFromFile(std::vector<std::shared_ptr<Enrollment>>& enrollments, LMSController& lmsController)
+{
+	std::ifstream fileReader(m_enrollmentFilePath, std::ios::in);
+	if (!fileReader.is_open())
+	{
+		return false;
+	}
+	fileReader.clear();
+	fileReader.seekg(0, std::ios::beg);
+	bool skipHeader = true;
+	std::string currentLine;
+	while (getline(fileReader, currentLine))
+	{
+		if (skipHeader)
+		{
+			skipHeader = false;
+			continue;
+		}
+		if (currentLine.empty()) //empty lines after content
+		{
+			continue;
+		}
+		std::stringstream currentEnrollment(currentLine);
+		std::string enrollmentIdString, studentIdString, courseIdString, numberOfCompletedModulesString, progressString, grade, groupIdString;
+		getline(currentEnrollment, enrollmentIdString, ',');
+		getline(currentEnrollment, studentIdString, ',');
+		getline(currentEnrollment, courseIdString, ',');
+		getline(currentEnrollment, numberOfCompletedModulesString, ',');
+		getline(currentEnrollment, progressString, ',');
+		getline(currentEnrollment, grade, ',');
+		getline(currentEnrollment, groupIdString, ',');
+		User* student = lmsController.getUser(stoi(studentIdString.substr(1)));
+		if (student == nullptr)
+		{
+			std::cout << "Student " << studentIdString << " not found for Enrollment " << enrollmentIdString << "!\n";
+			continue;
+		}
+		std::shared_ptr<Course> course = lmsController.getCourse(stoi(courseIdString.substr(1)));
+		if (course == nullptr)
+		{
+			std::cout << "Course not found for this group!\n";
+			continue; //skip enrollment
+		}
+		std::shared_ptr<Group> group;
+		if (stoi(groupIdString) == -1)
+		{
+			group = nullptr;
+		}
+		else
+		{
+			group = lmsController.getGroup(stoi(groupIdString.substr(1)));
+		}
+		int enrollmentId = stoi(enrollmentIdString.substr(1));
+		int numberOfCompletedModules = stoi(numberOfCompletedModulesString);
+		int progress = stoi(progressString);
+		enrollments.push_back(std::make_shared<Enrollment>(enrollmentId, student, course, numberOfCompletedModules, progress, grade, group));
+	}
+	fileReader.close();
+	return true;
+}
+
+bool FileManager::saveEnrollmentsToFile(const std::vector<std::shared_ptr<Enrollment>>& enrollments)
+{
+	std::ofstream fileWriter(m_enrollmentFilePath, std::ios::out | std::ios::trunc);
+	if (!fileWriter.is_open())
+	{
+		return false;
+	}
+	fileWriter << "enrollmentId,studentId,courseId,numberOfCompletedModules,progress,grade,groupId" << std::endl;
+	for (std::vector<std::shared_ptr<Enrollment>>::const_iterator iterator = enrollments.begin(); iterator != enrollments.end(); ++iterator)
+	{
+		fileWriter << "E" << (*iterator)->getEnrollmentId() << ","
+			<< "U" << (*iterator)->getEnrolledStudentId() << ","
+			<< "C" << (*iterator)->getEnrolledCourseId() << ","
+			<< (*iterator)->getNumberOfCompletedModules() << ","
+			<< (*iterator)->getProgress() << ","
+			<< (*iterator)->getGrade() << ",";
+
+		if ((*iterator)->getEnrolledGroupId() == -1)
+		{
+			fileWriter << -1;
+		}
+		else
+		{
+			fileWriter << "G" << (*iterator)->getEnrolledGroupId();
 		}
 		fileWriter << std::endl;
 	}

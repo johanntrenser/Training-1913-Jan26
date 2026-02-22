@@ -1,0 +1,3 @@
+enrollmentId,studentId,courseId,numberOfCompletedModules,progress,grade,groupId
+E1,U2,C1,0,0,NIL,-1
+E2,U5,C2,0,0,NIL,G1
