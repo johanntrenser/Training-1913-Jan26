@@ -186,8 +186,9 @@ bool FileManager::saveGroupsToFile(const std::vector<std::shared_ptr<Group>>& gr
 	fileWriter << "groupId,groupName,courseId,studentIds" << std::endl;
 	for (std::vector<std::shared_ptr<Group>>::const_iterator iterator = groups.begin(); iterator != groups.end(); ++iterator)
 	{
-		fileWriter << "G";
-		fileWriter << (*iterator)->getGroupId() << "," << (*iterator)->getGroupName() << "," << (*iterator)->getGroupCourseId() << ",";
+		fileWriter << "G" << (*iterator)->getGroupId() << ","
+			       << (*iterator)->getGroupName() << ","
+			       << "C" << (*iterator)->getGroupCourseId() << ",";
 		const std::vector<User*>& students = (*iterator)->getStudentsInGroup();
 		for (std::vector<User*>::const_iterator userIterator = students.begin(); userIterator != students.end(); ++userIterator)
 		{
