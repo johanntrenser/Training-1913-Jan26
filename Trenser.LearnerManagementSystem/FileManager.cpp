@@ -252,7 +252,8 @@ bool FileManager::loadEnrollmentsFromFile(std::vector<std::shared_ptr<Enrollment
 			continue; //skip enrollment
 		}
 		std::shared_ptr<Group> group;
-		if (stoi(groupIdString) == -1)
+		//if (stoi(groupIdString) == -1)  //throws stoi argument error if groupId is not -1 and of form G1
+		if (groupIdString == "-1")
 		{
 			group = nullptr;
 		}
