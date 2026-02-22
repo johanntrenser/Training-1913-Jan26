@@ -388,6 +388,92 @@ void LMSController::listStudentsInGroup()
     }
 }
 
+void LMSController::listStudentsProgressInCourse()
+{
+    string courseId;
+    int convertedCourseId = 0;
+    listCourses();
+    if (m_courses.empty())
+    {
+        cout << "No courses available!\n";
+        return;
+    }
+    cout << "Enter course id of course to show students progress of: ";
+    cin >> courseId;
+    cin.ignore(10000, '\n');
+    while (courseId.length() < 2 || courseId[0] != 'C' || !all_of(courseId.begin() + 1, courseId.end(), ::isdigit))
+    {
+        cout << "Invalid course id! Please Enter a valid course id: ";
+        cin >> courseId;
+        cin.ignore(10000, '\n');
+    }
+    convertedCourseId = stoi(courseId.substr(1));
+    shared_ptr<Course> course = getCourse(convertedCourseId);
+    if (!course)
+    {
+        cout << "Course not found!\n";
+        return;
+    }
+    bool found = false;
+    cout << "\nSTUDENT NAME\t\tPROGRESS\n" << endl;
+    for (vector<shared_ptr<Enrollment>>::iterator iterator = m_enrollments.begin(); iterator != m_enrollments.end(); ++iterator)
+    {
+        if ((*iterator)->getEnrolledCourseId() == convertedCourseId)
+        {
+            cout << (*iterator)->getEnrolledStudentName() << "\t\t" << (*iterator)->getProgress() << endl;
+            found = true;
+        }
+    }
+    if (!found)
+    {
+        cout << "No Students enrolled in this course!\n";
+    }
+    cout << endl;
+}
+
+void LMSController::listStudentsGradeInCourse()
+{
+    string courseId;
+    int convertedCourseId = 0;
+    listCourses();
+    if (m_courses.empty())
+    {
+        cout << "No courses available!\n";
+        return;
+    }
+    cout << "Enter course id of course to show student grades of: ";
+    cin >> courseId;
+    cin.ignore(10000, '\n');
+    while (courseId.length() < 2 || courseId[0] != 'C' || !all_of(courseId.begin() + 1, courseId.end(), ::isdigit))
+    {
+        cout << "Invalid course id! Please Enter a valid course id: ";
+        cin >> courseId;
+        cin.ignore(10000, '\n');
+    }
+    convertedCourseId = stoi(courseId.substr(1));
+    shared_ptr<Course> course = getCourse(convertedCourseId);
+    if (!course)
+    {
+        cout << "Course not found!\n";
+        return;
+    }
+    bool found = false;
+    cout << "\nSTUDENT NAME\t\tGRADE\n" << endl;
+    for (vector<shared_ptr<Enrollment>>::iterator iterator = m_enrollments.begin(); iterator != m_enrollments.end(); ++iterator)
+    {
+        if ((*iterator)->getEnrolledCourseId() == convertedCourseId)
+        {
+            cout << (*iterator)->getEnrolledStudentName() << "\t\t" << (*iterator)->getGrade() << endl;
+            found = true;
+        }
+    }
+    if (!found)
+    {
+        cout << "No Students enrolled in this course!\n";
+    }
+    cout << endl;
+}
+
 std::shared_ptr<Course> LMSController::getCourse(int courseId)
 {
     for (vector<shared_ptr<Course>>::iterator iterator = m_courses.begin(); iterator != m_courses.end(); ++iterator)

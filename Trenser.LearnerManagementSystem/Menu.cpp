@@ -82,11 +82,11 @@ void Menu::instructorMenu()
 		}
 		else if (choice == 4)
 		{
-			m_lmsController->removeAdministrator();
+			m_lmsController->listStudentsGradeInCourse();
 		}
 		else if (choice == 5)
 		{
-			m_lmsController->removeStudent();
+			m_lmsController->listStudentsProgressInCourse();
 		}
 		else if (choice == 6)
 		{

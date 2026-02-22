@@ -7,6 +7,11 @@ int Enrollment::getEnrolledStudentId()
 	return m_student->getId();
 }
 
+std::string Enrollment::getEnrolledStudentName()
+{
+	return m_student->getName();
+}
+
 int Enrollment::getEnrolledCourseId()
 {
 	std::shared_ptr<Course> coursePtr = m_course.lock();

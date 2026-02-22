@@ -34,6 +34,7 @@ public:
 		m_group(group) {}
 	static int m_nextEnrollmentId;
 	int getEnrolledStudentId();
+	std::string getEnrolledStudentName();
 	int getEnrolledCourseId();
 	int getEnrolledGroupId();
 	int getEnrollmentId();

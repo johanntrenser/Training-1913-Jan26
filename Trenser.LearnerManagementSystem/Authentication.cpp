@@ -94,7 +94,7 @@ void Authentication::deleteUser(int userId)
             }
         }
     }
-    cout << "Administrator user has been deleted!\n" << endl;
+    cout << "User has been deleted!\n" << endl;
 }
 
 User* Authentication::getUser(int userId)
