@@ -66,7 +66,7 @@ bool FileManager::saveIdsToFile()
 
 bool FileManager::loadCoursesFromFile(std::vector<std::shared_ptr<Course>>& courses)
 {
-	std::ifstream fileReader(FileManager::m_courseFilePath, std::ios::in);
+	std::ifstream fileReader(m_courseFilePath, std::ios::in);
 	if (!fileReader.is_open())
 	{
 		return false;
@@ -106,6 +106,93 @@ bool FileManager::saveCoursesToFile(const std::vector<std::shared_ptr<Course>>& 
 	{
 		fileWriter << "C";
 		fileWriter << (*iterator)->getCourseId() << "," << (*iterator)->getCourseTitle() << "," << (*iterator)->getCourseDeadline() << "," << (*iterator)->getTotalNumberOfModules();
+		fileWriter << std::endl;
+	}
+	fileWriter.close();
+	return true;
+}
+
+bool FileManager::loadGroupsFromFile(std::vector<std::shared_ptr<Group>>& groups, LMSController& lmsController)
+{
+	std::ifstream fileReader(m_groupsFilePath, std::ios::in);
+	if (!fileReader.is_open())
+	{
+		return false;
+	}
+	fileReader.clear();
+	fileReader.seekg(0, std::ios::beg);
+	bool skipHeader = true;
+	std::string currentLine;
+	while (getline(fileReader, currentLine))
+	{
+		if (skipHeader)
+		{
+			skipHeader = false;
+			continue;
+		}
+		std::stringstream currentGroup(currentLine);
+		std::string groupIdString, name, courseIdString, studentIdsString;
+		getline(currentGroup, groupIdString, ',');
+		getline(currentGroup, name, ',');
+		getline(currentGroup, courseIdString, ',');
+		getline(currentGroup, studentIdsString, ',');
+		std::shared_ptr<Course> course = lmsController.getCourse(stoi(courseIdString));
+		if (course == nullptr)
+		{
+			std::cout << "Course not found for this group!\n"; 
+			continue; //skip group
+		}
+		std::shared_ptr<Group> group = std::make_shared<Group>(name, course);
+		group->setGroupId(std::stoi(groupIdString.substr(1)));
+		//load students
+		std::stringstream currentStudents(studentIdsString);
+		std::string studentIdString;
+		while (getline(currentStudents, studentIdString, ';'))
+		{
+			if (!studentIdString.empty())
+			{
+				User* student = lmsController.getUser(std::stoi(studentIdString));
+				if (student != nullptr)
+				{
+					group->addStudentToGroup(student);
+				}
+				else
+				{
+					std::cout << "Student " << studentIdString << " not found for Group " << name << "!\n";
+				}
+			}
+		}
+		groups.push_back(group);
+	}
+	fileReader.close();
+	return true;
+}
+
+bool FileManager::saveGroupsToFile(const std::vector<std::shared_ptr<Group>>& groups)
+{
+	std::ofstream fileWriter(m_groupsFilePath, std::ios::out | std::ios::trunc);
+	if (!fileWriter.is_open())
+	{
+		return false;
+	}
+	fileWriter << "groupId,groupName,courseId,studentIds" << std::endl;
+	for (std::vector<std::shared_ptr<Group>>::const_iterator iterator = groups.begin(); iterator != groups.end(); ++iterator)
+	{
+		fileWriter << "G";
+		fileWriter << (*iterator)->getGroupId() << "," << (*iterator)->getGroupName() << "," << (*iterator)->getGroupCourseId() << ",";
+		const std::vector<User*>& students = (*iterator)->getStudentsInGroup();
+		for (std::vector<User*>::const_iterator userIterator = students.begin(); userIterator != students.end(); ++userIterator)
+		{
+			User* student = *userIterator;
+			if (student != nullptr)
+			{
+				fileWriter << student->getId();
+				if (std::next(userIterator) != students.end())
+				{
+					fileWriter << ";";
+				}
+			}
+		}
 		fileWriter << std::endl;
 	}
 	fileWriter.close();

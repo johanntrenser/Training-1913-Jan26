@@ -54,7 +54,7 @@ void Menu::instructorMenu()
 			<< "7.  View Groups\n"
 			<< "8.  List All Students\n"
 			<< "9.  View Students in Group\n"
-			<< "9. Logout\n"
+			<< "9.  Logout\n"
 			<< "Enter your choice (1 - 9): ";
 		cin >> choice;
 		while (choice < 1 || choice > 9)
@@ -73,7 +73,7 @@ void Menu::instructorMenu()
 		}
 		else if (choice == 2)
 		{
-			//m_lmsController->enrollStudentToGroup();
+			m_lmsController->enrollStudentToGroup();
 		}
 		else if (choice == 3)
 		{

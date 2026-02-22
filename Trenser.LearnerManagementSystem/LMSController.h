@@ -39,10 +39,10 @@ public:
 	std::shared_ptr<Course> getCourse(int courseId);
 	User* getUser(int userId);
 	std::shared_ptr<Group> getGroup(int groupId);
-	void enrollStudentToCourse();
-	void enrollStudentToGroup();
 	void addGroup();
 	void removeGroup();
+	void enrollStudentToCourse();
+	void enrollStudentToGroup();
 	int getNumberOfStudents();
 	bool IsStudentEnrolledInCourse(int studentId, int courseId);
 	bool IsStudentEnrolledInGroup(int studentId, int groupId);

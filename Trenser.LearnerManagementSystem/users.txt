@@ -6,3 +6,4 @@ ID,USERNAME,NAME,PASSWORD,ROLE,STATUS
 5,vasu,vasu das,vasu,student,active
 6,domi,dominic,domi,instructor,active
 7,adminTwo,Administrator Two,adminTwo,admin,active
+8,daniel,Daniel Mathew,daniel,student,active

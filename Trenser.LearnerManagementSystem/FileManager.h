@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -7,6 +8,9 @@
 #include "Course.h"
 #include "Group.h"
 #include "Enrollment.h"
+#include "LMSController.h" //circular dependency
+class LMSController; //forward declaration
+
 class FileManager
 {
 private:
@@ -22,5 +26,7 @@ public:
 	static bool saveIdsToFile();
 	static bool loadCoursesFromFile(std::vector<std::shared_ptr<Course>>& courses);
 	static bool saveCoursesToFile(const std::vector<std::shared_ptr<Course>>& courses);
+	static bool loadGroupsFromFile(std::vector<std::shared_ptr<Group>>& groups, LMSController& lmsController);
+	static bool saveGroupsToFile(const std::vector<std::shared_ptr<Group>>& groups);
 };
 

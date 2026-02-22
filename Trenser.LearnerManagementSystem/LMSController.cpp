@@ -337,6 +337,58 @@ std::shared_ptr<Group> LMSController::getGroup(int groupId)
     return nullptr;
 }
 
+void LMSController::addGroup()
+{
+    string groupName, courseId;
+    int convertedCourseId = 0;
+    bool isExisting = true;
+    cin.ignore(10000, '\n');
+    while (isExisting)
+    {
+        cout << "Enter the group name: ";
+        getline(cin, groupName);
+        if (groupName.empty())
+        {
+            cout << "Title cannot be empty. Please try again.\n";
+            continue;
+        }
+        isExisting = false;
+        for (vector<shared_ptr<Group>>::iterator iterator = m_groups.begin(); iterator != m_groups.end(); ++iterator)
+        {
+            if ((*iterator)->getGroupName() == groupName)
+            {
+                cout << "Group already exists!\n";
+                isExisting = true;
+                break;
+            }
+        }
+    }
+    listCourses();
+    if (m_courses.empty())
+    {
+        cout << "No courses available!\n";
+        return;
+    }
+    cout << "Enter course id of course to add to: ";
+    cin >> courseId;
+    cin.ignore(10000, '\n');
+    while (courseId.length() < 2 || courseId[0] != 'C' || !all_of(courseId.begin() + 1, courseId.end(), ::isdigit))
+    {
+        cout << "Invalid course id! Please Enter a valid course id: ";
+        cin >> courseId;
+        cin.ignore(10000, '\n');
+    }
+    convertedCourseId = stoi(courseId.substr(1));
+    shared_ptr<Course> course = getCourse(convertedCourseId);
+    if (course == nullptr)
+    {
+        cout << "Course not found!" << endl;
+        return;
+    }
+    m_groups.push_back(make_shared<Group>(groupName, course));
+    cout << "Group Added Successfully!" << endl;
+}
+
 void LMSController::enrollStudentToCourse()
 {
     string userId, courseId;
@@ -554,6 +606,10 @@ void LMSController::loadAllFiles()
     {
         cout << "Failed to load courses from file!" << endl;
     }
+    if (!FileManager::loadGroupsFromFile(m_groups, *this))
+    {
+        cout << "Failed to load groups from file!" << endl;
+    }
 }
 
 void LMSController::saveAllFiles()
@@ -566,5 +622,9 @@ void LMSController::saveAllFiles()
     if (!FileManager::saveCoursesToFile(m_courses))
     {
         cout << "Failed to write ids to file!" << endl;
+    }
+    if (!FileManager::saveGroupsToFile(m_groups))
+    {
+        cout << "Failed to write groups to file!" << endl;
     }
 }
