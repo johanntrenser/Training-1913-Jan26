@@ -19,6 +19,7 @@ public:
 	void setGroupId(int groupId);
 	std::string getGroupName();
 	void setGroupName(std::string groupName);
+	int getGroupCourseId();
 	std::vector<User*>& getStudentsInGroup();
 	void addStudentToGroup(User* student);
 	~Group() = default;

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <algorithm>
 #pragma once
 #include "User.h"
 #include "Group.h"
@@ -35,11 +36,17 @@ public:
 	void listStudentNames();
 	void listCourses();
 	void listGroups();
+	std::shared_ptr<Course> getCourse(int courseId);
+	User* getUser(int userId);
+	std::shared_ptr<Group> getGroup(int groupId);
 	void enrollStudentToCourse();
 	void enrollStudentToGroup();
 	void addGroup();
 	void removeGroup();
+	int getNumberOfStudents();
 	bool IsStudentEnrolledInCourse(int studentId, int courseId);
+	bool IsStudentEnrolledInGroup(int studentId, int groupId);
+	bool IsStudentEnrolledInGroupsCourse(int studentId, int groupId);
 	void loadAllFiles();
 	void saveAllFiles();
 };

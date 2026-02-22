@@ -97,6 +97,18 @@ void Authentication::deleteUser(int userId)
     cout << "Administrator user has been deleted!\n" << endl;
 }
 
+User* Authentication::getUser(int userId)
+{
+    for (vector<User*>::iterator iterator = m_users.begin(); iterator != m_users.end(); ++iterator)
+    {
+        if ((*iterator)->getId() == userId)
+        {
+            return *iterator;
+        }
+    }
+    return nullptr;
+}
+
 const vector<User*>& Authentication::getUsers() const
 {
     return m_users;

@@ -32,3 +32,8 @@ int Enrollment::getEnrolledGroupId()
 		return -1;
 	}
 }
+
+void Enrollment::setGroup(std::shared_ptr<Group> group)
+{
+	m_group = group;
+}

@@ -45,14 +45,61 @@ void Menu::instructorMenu()
 	while (isMenuActive)
 	{
 		cout << "===================INSTRUCTOR MENU===================" << endl;
-		cout << "\n1.Logout\nEnter choice: ";
+		cout << "1.  Enroll Student to Course\n"
+			<< "2.  Enroll Student to Group\n"
+			<< "3.  Grade Students\n"
+			<< "4.  View Student Grades\n"
+			<< "5.  View Student Progress\n"
+			<< "6.  Add Group\n"
+			<< "7.  View Groups\n"
+			<< "8.  List All Students\n"
+			<< "9.  View Students in Group\n"
+			<< "9. Logout\n"
+			<< "Enter your choice (1 - 9): ";
 		cin >> choice;
-		while (choice != 1)
+		while (choice < 1 || choice > 9)
 		{
-			cout << "Invalid choice! Please select a valid option: " << endl;
+			cout << "Invalid choice! Please select a valid option : " << endl;
 			cin >> choice;
 		}
+		cout << endl;
+		if (m_lmsController->getUserRole() == "student")
+		{
+			cout << "User is not authorized to access instructor menu!" << endl;
+		}
 		if (choice == 1)
+		{
+			m_lmsController->enrollStudentToCourse();
+		}
+		else if (choice == 2)
+		{
+			//m_lmsController->enrollStudentToGroup();
+		}
+		else if (choice == 3)
+		{
+			m_lmsController->addInstructor();
+		}
+		else if (choice == 4)
+		{
+			m_lmsController->removeAdministrator();
+		}
+		else if (choice == 5)
+		{
+			m_lmsController->removeStudent();
+		}
+		else if (choice == 6)
+		{
+			m_lmsController->removeInstructor();
+		}
+		else if (choice == 7)
+		{
+			m_lmsController->addCourse();
+		}
+		else if (choice == 8)
+		{
+			m_lmsController->listStudents();
+		}
+		else if (choice == 9)
 		{
 			isMenuActive = false;
 		}
@@ -88,7 +135,7 @@ void Menu::adminMenu()
 		cout << endl;
 		if (m_lmsController->getUserRole() == "student" || m_lmsController->getUserRole() == "instructor")
 		{
-			cout << "User is authorized to access administrator menu!" << endl;
+			cout << "User is not authorized to access administrator menu!" << endl;
 		}
 		if (choice == 1)
 		{

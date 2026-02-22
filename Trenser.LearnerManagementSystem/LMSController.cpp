@@ -191,7 +191,7 @@ void LMSController::removeAdministrator()
     listAdminstrators();
     cout << "Enter user id of administrator to delete: ";
     cin >> userId;
-    while (userId.length() < 2 || userId[0] != 'U'  || isdigit(stoi(userId.substr(1))))
+    while (userId.length() < 2 || userId[0] != 'U'  || !all_of(userId.begin() + 1, userId.end(), ::isdigit))
     {
         cout << "Invalid user id! Please Enter a valid user id: ";
         cin >> userId;
@@ -273,7 +273,7 @@ void LMSController::listStudentNames()
 {
     Authentication& authentication = Authentication::getInstance();
     vector<User*> users = authentication.getUsers();
-    cout << "============STUDENTS LIST==========" << endl;
+    cout << ">>>>>STUDENTS LIST<<<<<" << endl;
     for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
     {
         if ((*iterator)->getRole() == "student" && (*iterator)->getStatus() != "inactive")
@@ -286,7 +286,7 @@ void LMSController::listStudentNames()
 
 void LMSController::listCourses()
 {
-    cout << "==========COURSE LIST===========" << endl;
+    cout << ">>>>>COURSE LIST<<<<<" << endl;
     for (vector<shared_ptr<Course>>::iterator iterator = m_courses.begin(); iterator != m_courses.end(); ++iterator)
     {
         cout << "Course id: C" << (*iterator)->getCourseId() << endl;
@@ -298,13 +298,43 @@ void LMSController::listCourses()
 
 void LMSController::listGroups()
 {
-    cout << "==========GROUPS LIST===========" << endl;
+    cout << ">>>>>GROUPS LIST<<<<<" << endl;
     for (vector<shared_ptr<Group>>::iterator iterator = m_groups.begin(); iterator != m_groups.end(); ++iterator)
     {
         cout << "Group id: G" << (*iterator)->getGroupId() << endl;
         cout << "Group Name: " << (*iterator)->getGroupName() << endl;
         cout << "Number of Students: " << (*iterator)->getStudentsInGroup().size() << "\n" << endl;
     }
+}
+
+std::shared_ptr<Course> LMSController::getCourse(int courseId)
+{
+    for (vector<shared_ptr<Course>>::iterator iterator = m_courses.begin(); iterator != m_courses.end(); ++iterator)
+    {
+        if ((*iterator)->getCourseId() == courseId)
+        {
+            return *iterator;
+        }
+    }
+    return nullptr;
+}
+
+User* LMSController::getUser(int userId)
+{
+    Authentication& authentication = Authentication::getInstance();
+    return authentication.getUser(userId);
+}
+
+std::shared_ptr<Group> LMSController::getGroup(int groupId)
+{
+    for (vector<shared_ptr<Group>>::iterator iterator = m_groups.begin(); iterator != m_groups.end(); ++iterator)
+    {
+        if ((*iterator)->getGroupId() == groupId)
+        {
+            return *iterator;
+        }
+    }
+    return nullptr;
 }
 
 void LMSController::enrollStudentToCourse()
@@ -314,29 +344,146 @@ void LMSController::enrollStudentToCourse()
     int convertedCourseId = 0;
     cout << "============STUDENT ENROLLMENT==============\n";
     listStudentNames();
+    if (getNumberOfStudents() == 0)
+    {
+        cout << "No students available!\n";
+        return;
+    }
     cout << "Enter user id of student to enroll: ";
     cin >> userId;
-    while (userId.length() < 2 || userId[0] != 'U' || isdigit(stoi(userId.substr(1))))
+    cin.ignore(10000, '\n');
+    while (userId.length() < 2 || userId[0] != 'U' || !all_of(userId.begin() + 1, userId.end(), ::isdigit))
+    {
+        cout << "Invalid user id! Please Enter a valid user id: ";
+        cin >> userId;
+        cin.ignore(10000, '\n');
+    }
+    convertedUserId = stoi(userId.substr(1));
+    listCourses();
+    if (m_courses.empty())
+    {
+        cout << "No courses available!\n";
+        return;
+    }
+    cout << "Enter course id of course to add to: ";
+    cin >> courseId;
+    cin.ignore(10000, '\n');
+    while (courseId.length() < 2 || courseId[0] != 'C' || !all_of(courseId.begin() + 1, courseId.end(), ::isdigit))
+    {
+        cout << "Invalid course id! Please Enter a valid course id: ";
+        cin >> courseId;
+        cin.ignore(10000, '\n');
+    }
+    convertedCourseId = stoi(courseId.substr(1));
+    if (IsStudentEnrolledInCourse(convertedUserId, convertedCourseId))
+    {
+        cout << "Student is already enrolled in this course!\n";
+        return;
+    }
+    User* student = getUser(convertedUserId);
+    shared_ptr<Course> course = getCourse(convertedCourseId);
+    if (!student)
+    {
+        cout << "Student not found!\n";
+        return;
+    }
+    if (!course)
+    {
+        cout << "Course not found!\n";
+        return;
+    }
+    m_enrollments.push_back(make_shared<Enrollment>(student, course, 0, 0, "NIL", nullptr));
+    cout << "Student Enrolled Successfully!\n" << endl;
+}
+
+void LMSController::enrollStudentToGroup()
+{
+    string userId, groupId;
+    int convertedUserId = 0;
+    int convertedGroupId = 0;
+    cout << "============GROUP ENROLLMENT==============\n";
+    listStudents();
+    if (getNumberOfStudents() == 0)
+    {
+        cout << "No Students available!" << endl;
+        return;
+    }
+    cout << "Enter user id of student to enroll: ";
+    cin >> userId;
+    while (userId.length() < 2 || userId[0] != 'U' || !all_of(userId.begin() + 1, userId.end(), ::isdigit))
     {
         cout << "Invalid user id! Please Enter a valid user id: ";
         cin >> userId;
     }
     convertedUserId = stoi(userId.substr(1));
-    listCourses();
-    cout << "Enter course id of course to add to: ";
-    cin >> courseId;
-    while (courseId.length() < 2 || courseId[0] != 'C' || isdigit(stoi(courseId.substr(1))))
+    listGroups();
+    if (m_groups.size() == 0)
     {
-        cout << "Invalid user id! Please Enter a valid user id: ";
-        cin >> courseId;
-    }
-    convertedCourseId = stoi(courseId.substr(1));
-    if (IsStudentEnrolledInCourse(convertedUserId, convertedCourseId))
-    {
-        cout << "Student is already enrolled in this course!" << endl;
+        cout << "No Groups available!" << endl;
         return;
     }
+    cout << "Enter group id of group to enroll to: ";
+    cin >> groupId;
+    while (groupId.length() < 2 || groupId[0] != 'G' || !all_of(groupId.begin() + 1, groupId.end(), ::isdigit))
+    {
+        cout << "Invalid group id! Please Enter a valid group id: ";
+        cin >> groupId;
+    }
+    convertedGroupId = stoi(groupId.substr(1));
+    //checks if student is already enrolled in group
+    if (IsStudentEnrolledInGroup(convertedUserId, convertedGroupId))
+    {
+        cout << "Student is already enrolled in this group!" << endl;
+        return;
+    }
+    //checks if student is enrolled in groups course but not group
+    shared_ptr<Group> group = getGroup(convertedGroupId);
+    if (group == nullptr)
+    {
+        cout << "Group Not Found" << endl;
+        return;
+    }
+    int groupCourseId = group->getGroupCourseId();
+    if (IsStudentEnrolledInGroupsCourse(convertedUserId, convertedGroupId))
+    {
+        for (vector<shared_ptr<Enrollment>>::iterator iterator = m_enrollments.begin(); iterator != m_enrollments.end(); ++iterator)
+        {
+            if ((*iterator)->getEnrolledStudentId() == convertedUserId && (*iterator)->getEnrolledCourseId() == groupCourseId && (*iterator)->getEnrolledGroupId() == -1)
+            {
+                (*iterator)->setGroup(group);
+                group->addStudentToGroup(getUser(convertedUserId));
+            }
+        }
+        cout << "Student is already enrolled to course! Added student to course group" << endl;
+        return;
+    }
+    //fresh enrollment
+    User* user = getUser(convertedUserId);
+    shared_ptr<Course> course = getCourse(groupCourseId);
 
+    if (!user || !course)
+    {
+        cout << "Enrollment failed due to invalid data." << endl;
+        return;
+    }
+    m_enrollments.push_back(make_shared<Enrollment>(user, course, 0, 0, "NIL", group));
+    group->addStudentToGroup(user);
+    cout << "Student enrolled to group successfully!\n" << endl;
+}
+
+int LMSController::getNumberOfStudents()
+{
+    int studentCount = 0;
+    Authentication& authentication = Authentication::getInstance();
+    vector<User*> users = authentication.getUsers();
+    for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
+    {
+        if ((*iterator)->getRole() == "student" && (*iterator)->getStatus() != "inactive")
+        {
+            studentCount++;
+        }
+    }
+    return studentCount;
 }
 
 bool LMSController::IsStudentEnrolledInCourse(int studentId, int courseId)
@@ -348,6 +495,48 @@ bool LMSController::IsStudentEnrolledInCourse(int studentId, int courseId)
             if ((*iterator)->getEnrolledCourseId() == courseId)
             {
                 return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool LMSController::IsStudentEnrolledInGroup(int studentId, int groupId)
+{
+    for (vector<shared_ptr<Enrollment>>::iterator iterator = m_enrollments.begin(); iterator != m_enrollments.end(); ++iterator)
+    {
+        if ((*iterator)->getEnrolledStudentId() == studentId)
+        {
+            if ((*iterator)->getEnrolledGroupId() != -1)
+            {
+                if ((*iterator)->getEnrolledGroupId() == groupId)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool LMSController::IsStudentEnrolledInGroupsCourse(int studentId, int groupId)
+{
+    shared_ptr<Group> group = getGroup(groupId);
+    if (group == nullptr)
+    {
+        return false;
+    }
+    int groupCourseId = group->getGroupCourseId();
+    for (vector<shared_ptr<Enrollment>>::iterator iterator = m_enrollments.begin(); iterator != m_enrollments.end(); ++iterator)
+    {
+        if ((*iterator)->getEnrolledStudentId() == studentId)
+        {
+            if ((*iterator)->getEnrolledGroupId() == -1) 
+            {
+                if ((*iterator)->getEnrolledCourseId() == groupCourseId)
+                {
+                    return true;
+                }
             }
         }
     }

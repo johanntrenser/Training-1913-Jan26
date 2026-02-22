@@ -36,6 +36,7 @@ public:
 	int getEnrolledStudentId();
 	int getEnrolledCourseId();
 	int getEnrolledGroupId();
+	void setGroup(std::shared_ptr<Group> group);
 	~Enrollment() = default;
 };
 

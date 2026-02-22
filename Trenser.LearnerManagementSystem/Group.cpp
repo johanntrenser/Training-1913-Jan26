@@ -22,6 +22,16 @@ void Group::setGroupName(std::string groupName)
     m_groupName = groupName;
 }
 
+int Group::getGroupCourseId()
+{
+    std::shared_ptr<Course> course = m_course.lock();
+    if (course != nullptr)
+    {
+        return course->getCourseId();
+    }
+    return -1;
+}
+
 std::vector<User*>& Group::getStudentsInGroup()
 {
     return m_students;

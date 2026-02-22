@@ -1,1 +1,3 @@
 courseId,title,deadline,totalNumberOfModules
+C1,english,september 2026,5
+C2,maths,march 2026,4
