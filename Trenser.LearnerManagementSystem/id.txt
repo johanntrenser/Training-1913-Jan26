@@ -1,2 +1,2 @@
 userId,groupId,courseId,enrollmentId
-12,14,4,4
+12,6,4,4

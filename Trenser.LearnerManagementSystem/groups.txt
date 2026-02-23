@@ -1,5 +1,6 @@
 groupId,groupName,courseId,studentIds
 G1,mat101,C2,U5
-G3,english102,C1,
-G9,github,C3,
-G13,adad,C1,
+G2,english102,C1,
+G3,github,C3,
+G4,adad,C1,
+G5,science101,C3,

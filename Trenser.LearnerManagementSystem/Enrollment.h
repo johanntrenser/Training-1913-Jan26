@@ -41,8 +41,11 @@ public:
 	int getEnrollmentId();
 	int getProgress();
 	std::string getGrade();
+	void setGrade(std::string grade);
 	int getNumberOfCompletedModules();
 	void setGroup(std::shared_ptr<Group> group);
+	void setNumberOfCompletedModules(int modules);
+	void setProgress(int progress);
 	~Enrollment() = default;
 };
 
