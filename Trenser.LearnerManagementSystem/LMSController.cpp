@@ -494,6 +494,26 @@ void LMSController::listStudentsGradeInCourse()
     cout << endl;
 }
 
+void LMSController::listStudentGrades()
+{
+    bool found = false;
+    cout << "\nSTUDENT NAME\t\tCOURSE\t\tGRADE\n" << endl;
+    for (vector<shared_ptr<Enrollment>>::iterator iterator = m_enrollments.begin(); iterator != m_enrollments.end(); ++iterator)
+    {
+        if ((*iterator)->getEnrolledStudentId() == m_user->getId())
+        {
+            shared_ptr<Course> course = getCourse((*iterator)->getEnrolledCourseId());
+            cout << (*iterator)->getEnrolledStudentName() << "\t\t" << course->getCourseTitle() << (*iterator)->getGrade() << endl;
+            found = true;
+        }
+    }
+    if (!found)
+    {
+        cout << "Student has no course enrollments!\n";
+    }
+    cout << "\n" << endl;
+}
+
 void LMSController::listEnrolledCourses()
 {
     bool found = false;
@@ -517,6 +537,42 @@ void LMSController::listEnrolledCourses()
         cout << "No Enrolled Courses Found!\n" << endl;
     }
     cout << endl;
+}
+
+void LMSController::listEnrolledGroups()
+{
+    bool found = false;
+    cout << "\n============Enrolled Groups List=============\n";
+    for (vector<shared_ptr<Enrollment>>::iterator iterator = m_enrollments.begin(); iterator != m_enrollments.end(); ++iterator)
+    {
+        if ((*iterator)->getEnrolledStudentId() == m_user->getId())
+        {
+            int groupId = (*iterator)->getEnrolledGroupId();
+            if (groupId == -1)
+            {
+                continue;
+            }
+            else
+            {
+                shared_ptr<Group> group = getGroup(groupId);
+                if (group != nullptr)
+                {
+                    cout << "G" << group->getGroupId() << ". " << group->getGroupName() << endl;
+                    found = true;
+                }
+            }
+        }
+    }
+    if (!found)
+    {
+        cout << "No Enrolled Groups Found!\n" << endl;
+    }
+    cout << endl;
+}
+
+void LMSController::listStudentProgress()
+{
+
 }
 
 std::shared_ptr<Course> LMSController::getCourse(int courseId)

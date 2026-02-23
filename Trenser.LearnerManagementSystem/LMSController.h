@@ -39,7 +39,10 @@ public:
 	void listStudentsInGroup();
 	void listStudentsProgressInCourse();
 	void listStudentsGradeInCourse();
+	void listStudentGrades();
 	void listEnrolledCourses();
+	void listEnrolledGroups();
+	void listStudentProgress();
 	std::shared_ptr<Course> getCourse(int courseId);
 	User* getUser(int userId);
 	std::shared_ptr<Group> getGroup(int groupId);
