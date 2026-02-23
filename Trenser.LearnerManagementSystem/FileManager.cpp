@@ -155,8 +155,8 @@ bool FileManager::loadGroupsFromFile(std::vector<std::shared_ptr<Group>>& groups
 			std::cout << "Course not found for this group!\n"; 
 			continue; //skip group
 		}
-		std::shared_ptr<Group> group = std::make_shared<Group>(name, course);
-		group->setGroupId(std::stoi(groupIdString.substr(1)));
+		int groupId = std::stoi(groupIdString.substr(1));
+		std::shared_ptr<Group> group = std::make_shared<Group>(groupId, name, course);
 		//load students
 		std::stringstream currentStudents(studentIdsString);
 		std::string studentIdString;

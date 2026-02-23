@@ -15,6 +15,7 @@ private:
 public:
 	Group() : m_groupId(0), m_groupName(""), m_students() {}
 	Group(std::string groupName, std::shared_ptr<Course> course) : m_groupId(m_nextGroupId++), m_groupName(groupName), m_course(course), m_students() {}
+	Group(int groupId, std::string groupName, std::shared_ptr<Course> course) : m_groupId(groupId), m_groupName(groupName), m_course(course), m_students() {}
 	static int m_nextGroupId;
 	int getGroupId();
 	void setGroupId(int groupId);
