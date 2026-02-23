@@ -144,14 +144,16 @@ void Menu::adminMenu()
 			 << "5.  Remove Student\n"
 			 << "6.  Remove Instructor\n"
 			 << "7.  Add Course\n"
-			 << "8.  List Students\n"
-			 << "9.  List Instructors\n"
-			 << "10. List Administrators\n"
-			 << "11. List All Users\n"
-			 << "12. Logout\n"
-			 << "Enter your choice (1 - 12): ";
+			 << "8.  Remove Course\n"
+			 << "9.  List Courses\n"
+			 << "10. List Students\n"
+			 << "11. List Instructors\n"
+			 << "12. List Administrators\n"
+			 << "13. List All Users\n"
+			 << "14. Logout\n"
+			 << "Enter your choice (1 - 14): ";
 		cin >> choice;
-		while (choice < 1 || choice > 12)
+		while (choice < 1 || choice > 14)
 		{
 			cout << "Invalid choice! Please select a valid option : " << endl;
 			cin >> choice;
@@ -191,21 +193,29 @@ void Menu::adminMenu()
 		}
 		else if (choice == 8)
 		{
-			m_lmsController->listStudents();
+			m_lmsController->removeCourse();
 		}
 		else if (choice == 9)
 		{
-			m_lmsController->listInstructors();
+			m_lmsController->listCourses();
 		}
 		else if (choice == 10)
 		{
-			m_lmsController->listAdminstrators();
+			m_lmsController->listStudents();
 		}
 		else if (choice == 11)
 		{
-			m_lmsController->listAllUsers();
+			m_lmsController->listInstructors();
 		}
 		else if (choice == 12)
+		{
+			m_lmsController->listAdminstrators();
+		}
+		else if (choice == 13)
+		{
+			m_lmsController->listAllUsers();
+		}
+		else if (choice == 14)
 		{
 			isMenuActive = false;
 		}

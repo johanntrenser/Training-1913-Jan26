@@ -4,6 +4,7 @@
 #include "User.h"
 #include "Group.h"
 #include "Course.h"
+
 class Enrollment
 {
 private:

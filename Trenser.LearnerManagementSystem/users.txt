@@ -2,9 +2,11 @@ ID,USERNAME,NAME,PASSWORD,ROLE,STATUS
 1,admin,Administrator main,admin,admin,active
 2,jissin,jissin sam mathew,jissin,student,active
 3,johann,johann dominic thomas,johann,instructor,active
-4,vasavan,vasavan vasu,vasavan,admin,active
+4,ramendran,subash ramendran,ramendran,admin,inactive
 5,vasu,vasu das,vasu,student,active
 6,domi,dominic,domi,instructor,active
 7,adminTwo,Administrator Two,adminTwo,admin,active
 8,daniel,Daniel Mathew,daniel,student,inactive
-8,adda,1,1,instructor,inactive
+9,adda,1,1,instructor,inactive
+10,tinu,Tinu Johnson,tinu,instructor,active
+11,das,das das,das,admin,active

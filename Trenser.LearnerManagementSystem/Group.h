@@ -4,6 +4,7 @@
 #pragma once
 #include "User.h"
 #include "Course.h"
+
 class Group
 {
 private:

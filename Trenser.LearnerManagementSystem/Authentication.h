@@ -26,5 +26,6 @@ public:
 	Authentication(const Authentication&) = delete;
 	Authentication& operator=(const Authentication&) = delete;
 	static Authentication& getInstance();
+	~Authentication();
 };
 

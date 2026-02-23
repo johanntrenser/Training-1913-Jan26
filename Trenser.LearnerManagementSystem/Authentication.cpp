@@ -181,3 +181,11 @@ Authentication& Authentication::getInstance()
     static Authentication instance;
     return instance;
 }
+
+Authentication::~Authentication()
+{
+    for (vector<User*>::iterator iterator = m_users.begin(); iterator != m_users.end(); ++iterator)
+    {
+        delete (*iterator);
+    }
+}

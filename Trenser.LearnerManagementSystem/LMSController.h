@@ -44,11 +44,14 @@ public:
 	User* getUser(int userId);
 	std::shared_ptr<Group> getGroup(int groupId);
 	void addGroup();
+	void removeCourse();
+	void updateCourseDetails(std::shared_ptr<Course> course);
 	void removeGroup();
 	void enrollStudentToCourse();
 	void enrollStudentToGroup();
 	void enrollToCourse();
 	int getNumberOfStudents();
+	int getNumberOfStudentsEnrolledInCourse(int courseId);
 	int getStudentEnrollmentsCount(int studentId);
 	int getStudentPendingEnrollmentsCount(int studentId);
 	bool IsStudentEnrolledInCourse(int studentId, int courseId);

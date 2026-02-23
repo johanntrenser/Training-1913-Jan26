@@ -9,6 +9,7 @@
 #include "Group.h"
 #include "Enrollment.h"
 #include "LMSController.h" //circular dependency
+
 class LMSController; //forward declaration
 
 class FileManager

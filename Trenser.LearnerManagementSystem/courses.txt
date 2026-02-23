@@ -1,3 +1,4 @@
-courseId,title,deadline,totalNumberOfModules
-C1,english,september 2026,5
-C2,maths,march 2026,4
+courseId,title,deadline,totalNumberOfModules,status
+C1,english,september 2026,5,active
+C2,maths,march 2026,4,active
+C3,Science,September 2026,7,active

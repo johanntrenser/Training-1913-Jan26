@@ -37,6 +37,20 @@ int Course::getTotalNumberOfModules()
 	return m_totalNumberOfModules;
 }
 
+void Course::setTotalNumberOfModules(int totalNumberOfModules)
+{
+	m_totalNumberOfModules = totalNumberOfModules;
+}
+
+std::string Course::getStatus()
+{
+	return m_status;
+}
+
+void Course::setStatus(std::string status)
+{
+	m_status = status;
+}
 
 
 

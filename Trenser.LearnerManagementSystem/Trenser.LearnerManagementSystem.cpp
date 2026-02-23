@@ -32,14 +32,6 @@ int main()
 		{
 			cout << "Loaded users from file successfully!" << endl;
 		}
-		/*if (!FileManager::loadIdsFromFile())
-		{
-			cout << "Failed to load ids from file!" << endl;
-		}
-		else
-		{
-			cout << "Loaded ids from file successfully!" << endl;
-		}*/
 		while (isMenuActive)
 		{
 			cout << "========================USER MENU=======================\n";
@@ -85,14 +77,6 @@ int main()
 		{
 			cout << "Users wrote to file successfully!" << endl;
 		}
-		/*if (!FileManager::saveIdsToFile())
-		{
-			cout << "Failed to write ids to file!" << endl;
-		}
-		else
-		{
-			cout << "Saved ids to file successfully!" << endl;
-		}*/
 	}
 	catch (const exception& e)
 	{

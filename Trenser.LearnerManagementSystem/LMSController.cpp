@@ -20,27 +20,38 @@ void LMSController::addCourse()
         {
             cout << "Title cannot be empty. Please try again.\n";
             continue;
-        } 
+        }
         isExisting = false;
         for (vector<shared_ptr<Course>>::iterator iterator = m_courses.begin(); iterator != m_courses.end(); ++iterator)
         {
             if ((*iterator)->getCourseTitle() == title)
             {
-                cout << "Course already exists!\n";
-                isExisting = true;
-                break;
+                if ((*iterator)->getStatus() == "active")
+                {
+                    cout << "Course already exists!\n";
+                    isExisting = true;
+                    break;
+                }
+                else
+                {
+                    //reactivate course
+                    (*iterator)->setStatus("active");
+                    updateCourseDetails(*iterator);
+                    cout << "Course reactivated successfully!\n" << endl;
+                    return;
+                }
             }
         }
     }
     while (deadline.empty())
-    { 
+    {
         cout << "Enter the deadline: ";
         getline(cin, deadline);
         if (deadline.empty())
         {
             cout << "Deadline cannot be empty. Please try again.\n";
         }
-    } 
+    }
     while (true)
     {
         cout << "Enter the number of modules: ";
@@ -53,7 +64,7 @@ void LMSController::addCourse()
             cout << "Invalid input. Please enter a positive integer.\n";
             cin.clear(); // clear error flag
             cin.ignore(10000, '\n'); // discard up to 10000 chars until newline
-            
+
         }
     }
     m_courses.push_back(make_shared<Course>(title, deadline, numberOfModules));
@@ -225,18 +236,23 @@ void LMSController::removeInstructor()
 void LMSController::removeAdministrator()
 {
     Authentication& authentication = Authentication::getInstance();
-    std::string userId;
-    int id;
+    std::string userIdString;
+    int userId;
+    int currentUserId = m_user->getId();
     listAdminstrators();
     cout << "Enter user id of administrator to delete: ";
-    cin >> userId;
-    while (userId.length() < 2 || userId[0] != 'U'  || !all_of(userId.begin() + 1, userId.end(), ::isdigit))
+    cin >> userIdString;
+    while (userIdString.length() < 2 || userIdString[0] != 'U' || !all_of(userIdString.begin() + 1, userIdString.end(), ::isdigit))
     {
         cout << "Invalid user id! Please Enter a valid user id: ";
-        cin >> userId;
+        cin >> userIdString;
     }
-    id = stoi(userId.substr(1)); //from 1st index
-    authentication.deleteUser(id);
+    userId = stoi(userIdString.substr(1)); //from 1st index
+    if (userId == currentUserId)
+    {
+        cout << "User cannot delete your own account!\n" << endl;
+    }
+    authentication.deleteUser(userId);
 }
 
 void LMSController::listStudents()
@@ -300,11 +316,11 @@ void LMSController::listAllUsers()
     cout << "============USERS LIST==========" << endl;
     for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
     {
-            cout << "User id: U" << (*iterator)->getId() << endl;
-            cout << "Username: " << (*iterator)->getUserName() << endl;
-            cout << "Name: " << (*iterator)->getName() << endl;
-            cout << "Role: " << (*iterator)->getRole() << endl;
-            cout << "Status: " << (*iterator)->getStatus() << "\n" << endl;
+        cout << "User id: U" << (*iterator)->getId() << endl;
+        cout << "Username: " << (*iterator)->getUserName() << endl;
+        cout << "Name: " << (*iterator)->getName() << endl;
+        cout << "Role: " << (*iterator)->getRole() << endl;
+        cout << "Status: " << (*iterator)->getStatus() << "\n" << endl;
     }
 }
 
@@ -328,10 +344,14 @@ void LMSController::listCourses()
     cout << ">>>>>COURSE LIST<<<<<" << endl;
     for (vector<shared_ptr<Course>>::iterator iterator = m_courses.begin(); iterator != m_courses.end(); ++iterator)
     {
-        cout << "Course id: C" << (*iterator)->getCourseId() << endl;
-        cout << "Course title: " << (*iterator)->getCourseTitle() << endl;
-        cout << "Course deadline: " << (*iterator)->getCourseDeadline() << endl;
-        cout << "Total Number of Modules: " << (*iterator)->getTotalNumberOfModules() << "\n" << endl;
+        if ((*iterator)->getStatus() != "inactive")
+        {
+            cout << "Course id: C" << (*iterator)->getCourseId() << endl;
+            cout << "Course title: " << (*iterator)->getCourseTitle() << endl;
+            cout << "Course deadline: " << (*iterator)->getCourseDeadline() << endl;
+            cout << "Total Number of Modules: " << (*iterator)->getTotalNumberOfModules() << "\n";
+            cout << "Course Status: " << (*iterator)->getStatus() << "\n" << endl;
+        }
     }
 }
 
@@ -358,7 +378,7 @@ void LMSController::listStudentsInGroup()
     }
     cout << "Enter group id of group to show students: ";
     cin >> groupId;
-    while (groupId.length() < 2 ||  groupId[0] != 'G' || !all_of(groupId.begin() + 1, groupId.end(), ::isdigit))
+    while (groupId.length() < 2 || groupId[0] != 'G' || !all_of(groupId.begin() + 1, groupId.end(), ::isdigit))
     {
         cout << "Invalid group id! Please Enter a valid group id: ";
         cin >> groupId;
@@ -579,6 +599,71 @@ void LMSController::addGroup()
     }
     m_groups.push_back(make_shared<Group>(groupName, course));
     cout << "Group Added Successfully!" << endl;
+}
+
+void LMSController::removeCourse()
+{
+    string courseId;
+    listCourses();
+    if (m_courses.empty())
+    {
+        cout << "No courses available!\n";
+        return;
+    }
+    cout << "Enter course id of course to remove: ";
+    cin >> courseId;
+    cin.ignore(10000, '\n');
+    while (courseId.length() < 2 || courseId[0] != 'C' || !all_of(courseId.begin() + 1, courseId.end(), ::isdigit))
+    {
+        cout << "Invalid course id! Please Enter a valid course id: ";
+        cin >> courseId;
+        cin.ignore(10000, '\n');
+    }
+    int convertedCourseId = stoi(courseId.substr(1));
+    int numberOfStudentsEnrolledInCourse = getNumberOfStudentsEnrolledInCourse(convertedCourseId);
+    if (numberOfStudentsEnrolledInCourse > 0)
+    {
+        cout << "Course cant be removed as it has student enrollments!\n" << endl;
+        return;
+    }
+    else
+    {
+        getCourse(convertedCourseId)->setStatus("inactive");
+        cout << "Course removed successfully!\n" << endl;
+    }
+}
+
+void LMSController::updateCourseDetails(shared_ptr<Course> course)
+{
+    string deadline;
+    int numberOfModules = 0;
+    while (deadline.empty())
+    {
+        cout << "Enter the new deadline: ";
+        getline(cin, deadline);
+        if (deadline.empty())
+        {
+            cout << "Deadline cannot be empty. Please try again.\n";
+        }
+    }
+    while (true)
+    {
+        cout << "Enter the number of modules: ";
+        if (cin >> numberOfModules && numberOfModules > 0)
+        {
+            break;
+        }
+        else
+        {
+            cout << "Invalid input. Please enter a positive integer.\n";
+            cin.clear(); // clear error flag
+            cin.ignore(10000, '\n'); // discard up to 10000 chars until newline
+
+        }
+    }
+    course->setCourseDeadline(deadline);
+    course->setTotalNumberOfModules(numberOfModules);
+    cout << "Course Updated Successfully!\n" << endl;
 }
 
 void LMSController::removeGroup()
@@ -807,6 +892,19 @@ int LMSController::getNumberOfStudents()
     return studentCount;
 }
 
+int LMSController::getNumberOfStudentsEnrolledInCourse(int courseId)
+{
+    int enrollmentCount = 0;
+    for (vector<shared_ptr<Enrollment>>::iterator iterator = m_enrollments.begin(); iterator != m_enrollments.end(); ++iterator)
+    {
+        if ((*iterator)->getEnrolledCourseId() == courseId)
+        {
+            enrollmentCount++;
+        }
+    }
+    return enrollmentCount;
+}
+
 int LMSController::getStudentEnrollmentsCount(int studentId)
 {
     int enrollmentCount = 0;
@@ -831,7 +929,7 @@ int LMSController::getStudentPendingEnrollmentsCount(int studentId)
             {
                 pendingEnrollmentCount++;
             }
-            
+
         }
     }
     return pendingEnrollmentCount;
@@ -882,7 +980,7 @@ bool LMSController::IsStudentEnrolledInGroupsCourse(int studentId, int groupId)
     {
         if ((*iterator)->getEnrolledStudentId() == studentId)
         {
-            if ((*iterator)->getEnrolledGroupId() == -1) 
+            if ((*iterator)->getEnrolledGroupId() == -1)
             {
                 if ((*iterator)->getEnrolledCourseId() == groupCourseId)
                 {

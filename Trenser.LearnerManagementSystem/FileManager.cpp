@@ -87,12 +87,13 @@ bool FileManager::loadCoursesFromFile(std::vector<std::shared_ptr<Course>>& cour
 			continue;
 		}
 		std::stringstream currentCourse(currentLine);
-		std::string id, title, deadline, totalNumberOfModules;
+		std::string id, title, deadline, totalNumberOfModules, status;
 		getline(currentCourse, id, ',');
 		getline(currentCourse, title, ',');
 		getline(currentCourse, deadline, ',');
 		getline(currentCourse, totalNumberOfModules, ',');
-		courses.push_back(std::make_shared<Course>(std::stoi(id.substr(1)), title, deadline, stoi(totalNumberOfModules)));
+		getline(currentCourse, status);
+		courses.push_back(std::make_shared<Course>(std::stoi(id.substr(1)), title, deadline, stoi(totalNumberOfModules), status));
 	}
 	fileReader.close();
 	return true;
@@ -105,11 +106,15 @@ bool FileManager::saveCoursesToFile(const std::vector<std::shared_ptr<Course>>& 
 	{
 		return false;
 	}
-	fileWriter << "courseId,title,deadline,totalNumberOfModules" << std::endl;
+	fileWriter << "courseId,title,deadline,totalNumberOfModules,status" << std::endl;
 	for (std::vector<std::shared_ptr<Course>>::const_iterator iterator = courses.begin(); iterator != courses.end(); ++iterator)
 	{
 		fileWriter << "C";
-		fileWriter << (*iterator)->getCourseId() << "," << (*iterator)->getCourseTitle() << "," << (*iterator)->getCourseDeadline() << "," << (*iterator)->getTotalNumberOfModules();
+		fileWriter << (*iterator)->getCourseId() << ","
+				   << (*iterator)->getCourseTitle() << ","
+				   << (*iterator)->getCourseDeadline() << ","
+				   << (*iterator)->getTotalNumberOfModules() << ","
+				   << (*iterator)->getStatus();
 		fileWriter << std::endl;
 	}
 	fileWriter.close();
