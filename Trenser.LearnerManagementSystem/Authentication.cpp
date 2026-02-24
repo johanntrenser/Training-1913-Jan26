@@ -17,7 +17,7 @@ User* Authentication::login()
     }
     for (vector<User*>::iterator iterator = m_users.begin(); iterator != m_users.end(); ++iterator)
     {
-        if (((*iterator)->getUserName() == username) && ((*iterator)->getPassword() == password) && ((*iterator)->getStatus() != "inactive"))
+        if (((*iterator)->getUserName() == username) && ((*iterator)->getPassword() == password) && ((*iterator)->getStatus()))
         {
             return *iterator;
         }
@@ -90,7 +90,7 @@ void Authentication::deleteUser(int userId)
             }
             else
             {
-                (*iterator)->setStatus("inactive");
+                (*iterator)->setStatus(false);
             }
         }
     }
@@ -168,9 +168,14 @@ bool Authentication::saveUsersToFile()
     fileWriter << "ID,USERNAME,NAME,PASSWORD,ROLE,STATUS" << endl;
     for (vector<User*>::iterator iterator = m_users.begin(); iterator != m_users.end(); ++iterator)
     {
-        fileWriter << (*iterator)->getId() << "," << (*iterator)->getUserName() << "," << (*iterator)->getName() << "," << (*iterator)->getPassword() << ","
-            << (*iterator)->getRole() << "," << (*iterator)->getStatus();
-        fileWriter << endl;
+        fileWriter << (*iterator)->getId() << ","
+            << (*iterator)->getUserName() << ","
+            << (*iterator)->getName() << ","
+            << (*iterator)->getPassword() << ","
+            << (*iterator)->getRole() << ","
+            << ((*iterator)->getStatus() ? "active" : "inactive")
+            << std::endl;
+
     } 
     fileWriter.close();
     return true;

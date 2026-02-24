@@ -262,13 +262,13 @@ void LMSController::listStudents()
     cout << "============STUDENTS LIST==========" << endl;
     for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
     {
-        if ((*iterator)->getRole() == "student" && (*iterator)->getStatus() != "inactive")
+        if ((*iterator)->getRole() == "student" && (*iterator)->getStatus())
         {
             cout << "User id: U" << (*iterator)->getId() << endl;
             cout << "Username: " << (*iterator)->getUserName() << endl;
             cout << "Name: " << (*iterator)->getName() << endl;
             cout << "Role: " << (*iterator)->getRole() << endl;
-            cout << "Status: " << (*iterator)->getStatus() << "\n" << endl;
+            cout << "Status: " << ((*iterator)->getStatus() ? "active" : "inactive") << "\n" << endl;
         }
     }
 }
@@ -280,13 +280,13 @@ void LMSController::listAdminstrators()
     cout << "============ADMISTRATORS LIST==========" << endl;
     for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
     {
-        if ((*iterator)->getRole() == "admin" && (*iterator)->getStatus() != "inactive")
+        if ((*iterator)->getRole() == "admin" && (*iterator)->getStatus())
         {
             cout << "User id: U" << (*iterator)->getId() << endl;
             cout << "Username: " << (*iterator)->getUserName() << endl;
             cout << "Name: " << (*iterator)->getName() << endl;
             cout << "Role: " << (*iterator)->getRole() << endl;
-            cout << "Status: " << (*iterator)->getStatus() << "\n" << endl;
+            cout << "Status: " << ((*iterator)->getStatus() ? "active" : "inactive") << "\n" << endl;
         }
     }
 }
@@ -298,13 +298,13 @@ void LMSController::listInstructors()
     cout << "============INSTRUCTORS LIST==========" << endl;
     for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
     {
-        if ((*iterator)->getRole() == "instructor" && (*iterator)->getStatus() != "inactive")
+        if ((*iterator)->getRole() == "instructor" && (*iterator)->getStatus())
         {
             cout << "User id: U" << (*iterator)->getId() << endl;
             cout << "Username: " << (*iterator)->getUserName() << endl;
             cout << "Name: " << (*iterator)->getName() << endl;
             cout << "Role: " << (*iterator)->getRole() << endl;
-            cout << "Status: " << (*iterator)->getStatus() << "\n" << endl;
+            cout << "Status: " << ((*iterator)->getStatus() ? "active" : "inactive") << "\n" << endl;
         }
     }
 }
@@ -320,7 +320,7 @@ void LMSController::listAllUsers()
         cout << "Username: " << (*iterator)->getUserName() << endl;
         cout << "Name: " << (*iterator)->getName() << endl;
         cout << "Role: " << (*iterator)->getRole() << endl;
-        cout << "Status: " << (*iterator)->getStatus() << "\n" << endl;
+        cout << "Status: " << ((*iterator)->getStatus() ? "active" : "inactive") << "\n" << endl;
     }
 }
 
@@ -331,7 +331,7 @@ void LMSController::listStudentNames()
     cout << ">>>>>STUDENTS LIST<<<<<" << endl;
     for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
     {
-        if ((*iterator)->getRole() == "student" && (*iterator)->getStatus() != "inactive")
+        if ((*iterator)->getRole() == "student" && (*iterator)->getStatus())
         {
             cout << "User id: U" << (*iterator)->getId() << endl;
             cout << "Name: " << (*iterator)->getName() << "\n" << endl;
@@ -399,7 +399,7 @@ void LMSController::listStudentsInGroup()
     }
     for (vector<User*>::const_iterator iterator = students.begin(); iterator != students.end(); ++iterator)
     {
-        if ((*iterator)->getStatus() != "inactive")
+        if ((*iterator)->getStatus())
         {
             cout << "User id: U" << (*iterator)->getId() << endl;
             cout << "Username: " << (*iterator)->getUserName() << endl;
@@ -1063,7 +1063,7 @@ int LMSController::getNumberOfStudents()
     vector<User*> users = authentication.getUsers();
     for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
     {
-        if ((*iterator)->getRole() == "student" && (*iterator)->getStatus() != "inactive")
+        if ((*iterator)->getRole() == "student" && (*iterator)->getStatus())
         {
             studentCount++;
         }
@@ -1191,7 +1191,7 @@ void LMSController::viewStudentsInMyGroup()
                     for (std::vector<User*>::const_iterator studentIterator = students.begin(); studentIterator != students.end(); ++studentIterator)
                     {
                         User* student = *studentIterator;
-                        if (student != nullptr && student->getStatus() != "inactive")
+                        if (student != nullptr && student->getStatus())
                         {
                             cout << "U" << student->getId() << " - " << student->getName() << endl;
                         }

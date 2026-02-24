@@ -27,8 +27,8 @@ public:
 	std::string getPassword();
 	void setPassword(std::string password);
 	std::string getRole();
-	std::string getStatus();
-	void setStatus(std::string status);
+	bool getStatus();
+	void setStatus(bool status);
 	virtual ~User() {}
 };
 

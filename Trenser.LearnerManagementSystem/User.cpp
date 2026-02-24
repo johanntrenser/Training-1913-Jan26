@@ -42,12 +42,26 @@ std::string User::getRole()
     return m_role;
 }
 
-std::string User::getStatus()
+bool User::getStatus()
 {
-    return m_status;
+    if (m_status == "active")
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
-void User::setStatus(std::string status)
+void User::setStatus(bool status)
 {
-    m_status = status;
+    if (status)
+    {
+        m_status = "active";
+    }
+    else
+    {
+        m_status = "inactive";
+    }
 }
