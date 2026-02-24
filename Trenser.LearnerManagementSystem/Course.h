@@ -30,8 +30,8 @@ public:
 	void setCourseDeadline(std::string courseDeadline);
 	int getTotalNumberOfModules();
 	void setTotalNumberOfModules(int totalNumberOfModules);
-	std::string getStatus();
-	void setStatus(std::string status);
+	bool getStatus();
+	void setStatus(bool status);
 	~Course() = default;
 };
 

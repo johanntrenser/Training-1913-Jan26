@@ -10,3 +10,4 @@ ID,USERNAME,NAME,PASSWORD,ROLE,STATUS
 9,adda,1,1,instructor,inactive
 10,tinu,Tinu Johnson,tinu,instructor,active
 11,das,das das,das,admin,active
+12,66,36,633,instructor,inactive

@@ -26,7 +26,7 @@ void LMSController::addCourse()
         {
             if ((*iterator)->getCourseTitle() == title)
             {
-                if ((*iterator)->getStatus() == "active")
+                if ((*iterator)->getStatus())
                 {
                     cout << "Course already exists!\n";
                     isExisting = true;
@@ -35,7 +35,7 @@ void LMSController::addCourse()
                 else
                 {
                     //reactivate course
-                    (*iterator)->setStatus("active");
+                    (*iterator)->setStatus(true);
                     updateCourseDetails(*iterator);
                     cout << "Course reactivated successfully!\n" << endl;
                     return;
@@ -262,7 +262,7 @@ void LMSController::listStudents()
     cout << "============STUDENTS LIST==========" << endl;
     for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
     {
-        if ((*iterator)->getRole() == "student" && (*iterator)->getStatus())
+        if ((*iterator)->getRole() == Student::STUDENT_ROLE && (*iterator)->getStatus())
         {
             cout << "User id: U" << (*iterator)->getId() << endl;
             cout << "Username: " << (*iterator)->getUserName() << endl;
@@ -280,7 +280,7 @@ void LMSController::listAdminstrators()
     cout << "============ADMISTRATORS LIST==========" << endl;
     for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
     {
-        if ((*iterator)->getRole() == "admin" && (*iterator)->getStatus())
+        if ((*iterator)->getRole() == Admin::ADMINISTRATOR_ROLE && (*iterator)->getStatus())
         {
             cout << "User id: U" << (*iterator)->getId() << endl;
             cout << "Username: " << (*iterator)->getUserName() << endl;
@@ -298,7 +298,7 @@ void LMSController::listInstructors()
     cout << "============INSTRUCTORS LIST==========" << endl;
     for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
     {
-        if ((*iterator)->getRole() == "instructor" && (*iterator)->getStatus())
+        if ((*iterator)->getRole() == Instructor::INSTRUCTOR_ROLE && (*iterator)->getStatus())
         {
             cout << "User id: U" << (*iterator)->getId() << endl;
             cout << "Username: " << (*iterator)->getUserName() << endl;
@@ -331,7 +331,7 @@ void LMSController::listStudentNames()
     cout << ">>>>>STUDENTS LIST<<<<<" << endl;
     for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
     {
-        if ((*iterator)->getRole() == "student" && (*iterator)->getStatus())
+        if ((*iterator)->getRole() == Student::STUDENT_ROLE && (*iterator)->getStatus())
         {
             cout << "User id: U" << (*iterator)->getId() << endl;
             cout << "Name: " << (*iterator)->getName() << "\n" << endl;
@@ -344,13 +344,13 @@ void LMSController::listCourses()
     cout << ">>>>>COURSE LIST<<<<<" << endl;
     for (vector<shared_ptr<Course>>::iterator iterator = m_courses.begin(); iterator != m_courses.end(); ++iterator)
     {
-        if ((*iterator)->getStatus() != "inactive")
+        if ((*iterator)->getStatus())
         {
             cout << "Course id: C" << (*iterator)->getCourseId() << endl;
             cout << "Course title: " << (*iterator)->getCourseTitle() << endl;
             cout << "Course deadline: " << (*iterator)->getCourseDeadline() << endl;
             cout << "Total Number of Modules: " << (*iterator)->getTotalNumberOfModules() << "\n";
-            cout << "Course Status: " << (*iterator)->getStatus() << "\n" << endl;
+            cout << "Course Status: " << ((*iterator)->getStatus()? "active" : "inactive") << "\n" << endl;
         }
     }
 }
@@ -1063,7 +1063,7 @@ int LMSController::getNumberOfStudents()
     vector<User*> users = authentication.getUsers();
     for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
     {
-        if ((*iterator)->getRole() == "student" && (*iterator)->getStatus())
+        if ((*iterator)->getRole() == Student::STUDENT_ROLE && (*iterator)->getStatus())
         {
             studentCount++;
         }

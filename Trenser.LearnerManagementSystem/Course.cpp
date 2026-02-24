@@ -42,15 +42,28 @@ void Course::setTotalNumberOfModules(int totalNumberOfModules)
 	m_totalNumberOfModules = totalNumberOfModules;
 }
 
-std::string Course::getStatus()
+bool Course::getStatus()
 {
-	return m_status;
+    if (m_status == "active")
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
-void Course::setStatus(std::string status)
+void Course::setStatus(bool status)
 {
-	m_status = status;
+    if (status)
+    {
+        m_status = "active";
+    }
+    else
+    {
+        m_status = "inactive";
+    }
 }
-
 
 

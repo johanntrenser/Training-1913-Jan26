@@ -111,10 +111,10 @@ bool FileManager::saveCoursesToFile(const std::vector<std::shared_ptr<Course>>& 
 	{
 		fileWriter << "C";
 		fileWriter << (*iterator)->getCourseId() << ","
-				   << (*iterator)->getCourseTitle() << ","
-				   << (*iterator)->getCourseDeadline() << ","
-				   << (*iterator)->getTotalNumberOfModules() << ","
-				   << (*iterator)->getStatus();
+			<< (*iterator)->getCourseTitle() << ","
+			<< (*iterator)->getCourseDeadline() << ","
+			<< (*iterator)->getTotalNumberOfModules() << ","
+			<< ((*iterator)->getStatus() ? "active" : "inactive");
 		fileWriter << std::endl;
 	}
 	fileWriter.close();

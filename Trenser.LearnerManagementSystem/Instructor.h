@@ -6,7 +6,8 @@ class Instructor : public User
 {
 public:
 	Instructor() = default;
-	Instructor(std::string userName, std::string name, std::string password) : User(User::m_nextUserId++, userName, name, password, "instructor", "active") {}
+	Instructor(std::string userName, std::string name, std::string password) : User(User::m_nextUserId++, userName, name, password, INSTRUCTOR_ROLE, "active") {}
+	static const std::string INSTRUCTOR_ROLE;
 	Instructor(int id, std::string userName, std::string name, std::string password, std::string role, std::string status) : User(id, userName, name, password, role, status) {}
 	~Instructor() = default;
 };

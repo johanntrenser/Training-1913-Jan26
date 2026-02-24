@@ -141,15 +141,15 @@ bool Authentication::loadUsersFromFile()
         getline(currentUser, password, ',');
         getline(currentUser, role, ',');
         getline(currentUser, status, ',');
-        if (role == "admin")
+        if (role == Admin::ADMINISTRATOR_ROLE)
         {
             m_users.push_back(new Admin(stoi(id), username, name, password, role, status));
         }
-        else if (role == "student")
+        else if (role == Student::STUDENT_ROLE)
         {
             m_users.push_back(new Student(stoi(id), username, name, password, role, status));
         }
-        else if (role == "instructor")
+        else if (role == Instructor::INSTRUCTOR_ROLE)
         {
             m_users.push_back(new Instructor(stoi(id), username, name, password, role, status));
         }
