@@ -56,6 +56,7 @@ public:
 	void completeModule();
 	void gradeStudent();
 	int getNumberOfStudents();
+	int getNumberOfInstructors();
 	int getNumberOfStudentsEnrolledInCourse(int courseId);
 	int getStudentEnrollmentsCount(int studentId);
 	int getStudentPendingEnrollmentsCount(int studentId);
@@ -64,6 +65,7 @@ public:
 	bool IsStudentEnrolledInGroupsCourse(int studentId, int groupId);
 	void viewStudentsInMyGroup();
 	std::string getValidatedGrade();
+	int getValidatedUserId();
 	void loadAllFiles();
 	void saveAllFiles();
 };

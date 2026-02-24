@@ -188,66 +188,49 @@ void LMSController::addAdministrator()
 void LMSController::removeStudent()
 {
     Authentication& authentication = Authentication::getInstance();
-    string userId;
-    int convertedUserId = 0;
+    int userId = 0;
     listStudentNames();
     if (getNumberOfStudents() == 0)
     {
         cout << "No students available!\n";
         return;
     }
-    cout << "Enter user id of student to enroll: ";
-    cin >> userId;
-    cin.ignore(10000, '\n');
-    while (userId.length() < 2 || userId[0] != 'U' || !all_of(userId.begin() + 1, userId.end(), ::isdigit))
-    {
-        cout << "Invalid user id! Please Enter a valid user id: ";
-        cin >> userId;
-        cin.ignore(10000, '\n');
-    }
-    convertedUserId = stoi(userId.substr(1));
-    if (getStudentPendingEnrollmentsCount(convertedUserId) > 0)
+    cout << "Enter user id of student to delete: ";
+    userId = getValidatedUserId();
+    if (getStudentPendingEnrollmentsCount(userId) > 0)
     {
         cout << "Student cannot be removed! Student still has pending courses\n" << endl;
     }
     else
     {
-        authentication.deleteUser(convertedUserId);
+        authentication.deleteUser(userId);
     }
 }
 
 void LMSController::removeInstructor()
 {
     Authentication& authentication = Authentication::getInstance();
-    std::string userId;
+    int userId;
     int id;
     listInstructors();
-    cout << "Enter user id of instructor to delete: ";
-    cin >> userId;
-    while (userId.length() < 2 || userId[0] != 'U' || !all_of(userId.begin() + 1, userId.end(), ::isdigit))
+    if (getNumberOfInstructors() == 0)
     {
-        cout << "Invalid user id! Please Enter a valid user id: ";
-        cin >> userId;
+        cout << "No instructors available!\n";
+        return;
     }
-    id = stoi(userId.substr(1));
-    authentication.deleteUser(id);
+    cout << "Enter user id of instructor to delete: ";
+    userId = getValidatedUserId();
+    authentication.deleteUser(userId);
 }
 
 void LMSController::removeAdministrator()
 {
     Authentication& authentication = Authentication::getInstance();
-    std::string userIdString;
     int userId;
     int currentUserId = m_user->getId();
     listAdminstrators();
     cout << "Enter user id of administrator to delete: ";
-    cin >> userIdString;
-    while (userIdString.length() < 2 || userIdString[0] != 'U' || !all_of(userIdString.begin() + 1, userIdString.end(), ::isdigit))
-    {
-        cout << "Invalid user id! Please Enter a valid user id: ";
-        cin >> userIdString;
-    }
-    userId = stoi(userIdString.substr(1)); //from 1st index
+    userId = getValidatedUserId();
     if (userId == currentUserId)
     {
         cout << "User cannot delete your own account!\n" << endl;
@@ -1071,6 +1054,21 @@ int LMSController::getNumberOfStudents()
     return studentCount;
 }
 
+int LMSController::getNumberOfInstructors()
+{
+    int instructorCount = 0;
+    Authentication& authentication = Authentication::getInstance();
+    vector<User*> users = authentication.getUsers();
+    for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
+    {
+        if ((*iterator)->getRole() == Instructor::INSTRUCTOR_ROLE && (*iterator)->getStatus())
+        {
+            instructorCount++;
+        }
+    }
+    return instructorCount;
+}
+
 int LMSController::getNumberOfStudentsEnrolledInCourse(int courseId)
 {
     int enrollmentCount = 0;
@@ -1227,6 +1225,22 @@ std::string LMSController::getValidatedGrade()
         }
         cout << "Invalid grade! Please enter between A and F.\n";
     }
+}
+
+int LMSController::getValidatedUserId()
+{
+    string userId;
+    int convertedUserId = 0;
+    cin >> userId;
+    cin.ignore(10000, '\n');
+    while (userId.length() < 2 || userId[0] != 'U' || !all_of(userId.begin() + 1, userId.end(), ::isdigit))
+    {
+        cout << "Invalid user id! Please enter a valid user id (Format: U123): ";
+        cin >> userId;
+        cin.ignore(10000, '\n');
+    }
+    convertedUserId = stoi(userId.substr(1));
+    return convertedUserId;
 }
 
 void LMSController::loadAllFiles()

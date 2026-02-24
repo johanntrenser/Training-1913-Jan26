@@ -3,15 +3,15 @@ using namespace std;
 
 void Menu::startSession()
 {
-	if(m_lmsController->getUserRole() == "student")
+	if(m_lmsController->getUserRole() == Student::STUDENT_ROLE)
 	{
 		studentMenu();
 	}
-	else if(m_lmsController->getUserRole() == "instructor")
+	else if(m_lmsController->getUserRole() == Instructor::INSTRUCTOR_ROLE)
 	{
 		instructorMenu();
 	}
-	else if (m_lmsController->getUserRole() == "admin")
+	else if (m_lmsController->getUserRole() == Admin::ADMINISTRATOR_ROLE)
 	{
 		adminMenu();
 	}
@@ -100,7 +100,7 @@ void Menu::instructorMenu()
 			cin >> choice;
 		}
 		cout << endl;
-		if (m_lmsController->getUserRole() == "student")
+		if (m_lmsController->getUserRole() == Student::STUDENT_ROLE)
 		{
 			cout << "User is not authorized to access instructor menu!" << endl;
 		}
@@ -180,7 +180,7 @@ void Menu::adminMenu()
 			cin >> choice;
 		}
 		cout << endl;
-		if (m_lmsController->getUserRole() == "student" || m_lmsController->getUserRole() == "instructor")
+		if (m_lmsController->getUserRole() == Student::STUDENT_ROLE || m_lmsController->getUserRole() == Instructor::INSTRUCTOR_ROLE)
 		{
 			cout << "User is not authorized to access administrator menu!" << endl;
 		}
