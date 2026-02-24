@@ -66,6 +66,8 @@ public:
 	void viewStudentsInMyGroup();
 	std::string getValidatedGrade();
 	int getValidatedUserId();
+	int getValidatedGroupId();
+	int getValidatedCourseId();
 	void loadAllFiles();
 	void saveAllFiles();
 };

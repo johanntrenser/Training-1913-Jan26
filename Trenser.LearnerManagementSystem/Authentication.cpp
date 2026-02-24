@@ -35,6 +35,11 @@ std::string Authentication::registerUser()
     int choice = 0;
     cout << "Enter the username: ";
     cin >> username;
+    while (username.empty())
+    {
+        cout << "Username cannot be empty: ";
+        cin >> username;
+    }
     for (vector<User*>::iterator iterator = m_users.begin(); iterator != m_users.end(); ++iterator)
     {
         if (((*iterator)->getUserName() == username))
