@@ -11,3 +11,8 @@ ID,USERNAME,NAME,PASSWORD,ROLE,STATUS
 10,tinu,Tinu Johnson,tinu,instructor,active
 11,das,das das,das,admin,active
 12,66,36,633,instructor,inactive
+13,johan,Johann two,johann,student,active
+14,,administrator five,admin,admin,active
+15,janardhanan,Janaradhanan A,janar,student,active
+16,niyas,niyas ,niyas,instructor,active
+17,niril,niril,niril,student,active

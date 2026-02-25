@@ -68,6 +68,7 @@ public:
 	int getValidatedUserId();
 	int getValidatedGroupId();
 	int getValidatedCourseId();
+	std::string getUniqueUsername();
 	void loadAllFiles();
 	void saveAllFiles();
 };

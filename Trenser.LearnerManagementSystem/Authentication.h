@@ -23,6 +23,8 @@ public:
 	const std::vector<User*>& getUsers() const;
 	bool loadUsersFromFile();
 	bool saveUsersToFile();
+	bool loadUsersAndIds();
+	bool saveUsersAndIds();
 	Authentication(const Authentication&) = delete;
 	Authentication& operator=(const Authentication&) = delete;
 	static Authentication& getInstance();

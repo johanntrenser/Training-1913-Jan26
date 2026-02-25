@@ -23,14 +23,14 @@ int main()
 	std::string statusMessage = "";
 	try
 	{
-		if (!authentication.loadUsersFromFile())
+		if (!authentication.loadUsersAndIds())
 		{
-			cout << "Failed to load users from file!" << endl;
+			cout << "Failed to load users and ids from file!" << endl;
 			return 0;
 		}
 		else
 		{
-			cout << "Loaded users from file successfully!" << endl;
+			cout << "Loaded users and ids from file successfully!" << endl;
 		}
 		while (isMenuActive)
 		{
@@ -69,13 +69,13 @@ int main()
 				cout << "Invalid Option! Please Try again\n" << endl;
 			}
 		}
-		if (!authentication.saveUsersToFile())
+		if (!authentication.saveUsersAndIds())
 		{
-			cout << "Failed to write users to file!" << endl;
+			cout << "Failed to write users and ids to file!" << endl;
 		}
 		else
 		{
-			cout << "Users wrote to file successfully!" << endl;
+			cout << "Users and ids wrote to file successfully!" << endl;
 		}
 	}
 	catch (const exception& e)

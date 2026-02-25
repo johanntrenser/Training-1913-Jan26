@@ -79,22 +79,7 @@ void LMSController::addStudent()
     string username = "";
     string password = "";
     string name = "";
-    bool isExisting = true;
-    while (isExisting)
-    {
-        cout << "Enter the username: ";
-        cin >> username;
-        isExisting = false;
-        for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
-        {
-            if (((*iterator)->getUserName() == username))
-            {
-                cout << "Username already exists!" << endl;
-                isExisting = true;
-                break;
-            }
-        }
-    }
+    username = getUniqueUsername();
     cout << "Enter your password: ";
     cin >> password;
     cin.ignore(10000, '\n');
@@ -117,22 +102,7 @@ void LMSController::addInstructor()
     string username = "";
     string password = "";
     string name = "";
-    bool isExisting = true;
-    while (isExisting)
-    {
-        cout << "Enter the username: ";
-        cin >> username;
-        isExisting = false;
-        for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
-        {
-            if (((*iterator)->getUserName() == username))
-            {
-                cout << "Username already exists!" << endl;
-                isExisting = true;
-                break;
-            }
-        }
-    }
+    username = getUniqueUsername();
     cout << "Enter  password: ";
     cin >> password;
     cin.ignore(10000, '\n');
@@ -155,22 +125,7 @@ void LMSController::addAdministrator()
     string username = "";
     string password = "";
     string name = "";
-    bool isExisting = true;
-    while (isExisting)
-    {
-        cout << "Enter the username: ";
-        cin >> username;
-        isExisting = false;
-        for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
-        {
-            if (((*iterator)->getUserName() == username))
-            {
-                cout << "Username already exists!" << endl;
-                isExisting = true;
-                break;
-            }
-        }
-    }
+    name = getUniqueUsername();
     cout << "Enter password: ";
     cin >> password;
     cin.ignore(10000, '\n');
@@ -1204,13 +1159,33 @@ int LMSController::getValidatedCourseId()
     return convertedCourseId;
 }
 
+std::string LMSController::getUniqueUsername()
+{
+    Authentication& authentication = Authentication::getInstance();
+    vector<User*> users = authentication.getUsers();
+    string username = "";
+    bool isExisting = true;
+    while (isExisting)
+    {
+        cout << "Enter the username: ";
+        cin >> username;
+        isExisting = false;
+        for (vector<User*>::iterator iterator = users.begin(); iterator != users.end(); ++iterator)
+        {
+            if (((*iterator)->getUserName() == username))
+            {
+                cout << "Username already exists!" << endl;
+                isExisting = true;
+                break;
+            }
+        }
+    }
+    return username;
+}
+
 void LMSController::loadAllFiles()
 {
     cout << "\nLoading datas from file........\n" << endl;
-    if (!FileManager::loadIdsFromFile())
-    {
-        cout << "Failed to load ids from file!" << endl;
-    }
     if (!FileManager::loadCoursesFromFile(m_courses))
     {
         cout << "Failed to load courses from file!" << endl;
@@ -1228,10 +1203,6 @@ void LMSController::loadAllFiles()
 void LMSController::saveAllFiles()
 {
     cout << "\nSaving datas to file........\n" << endl;
-    if (!FileManager::saveIdsToFile())
-    {
-        cout << "Failed to write ids to file!" << endl;
-    }
     if (!FileManager::saveCoursesToFile(m_courses))
     {
         cout << "Failed to write ids to file!" << endl;

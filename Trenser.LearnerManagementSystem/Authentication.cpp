@@ -186,6 +186,30 @@ bool Authentication::saveUsersToFile()
     return true;
 }
 
+bool Authentication::loadUsersAndIds()
+{
+    if (!loadUsersFromFile() && !FileManager::loadIdsFromFile())
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+bool Authentication::saveUsersAndIds()
+{
+    if (!saveUsersToFile() && !FileManager::saveIdsToFile())
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
 Authentication& Authentication::getInstance()
 {
     static Authentication instance;
