@@ -1114,49 +1114,70 @@ std::string LMSController::getValidatedGrade()
 int LMSController::getValidatedUserId()
 {
     string userId;
-    int convertedUserId = 0;
-    cin >> userId;
-    cin.ignore(10000, '\n');
-    while (userId.length() < 2 || userId[0] != 'U' || !all_of(userId.begin() + 1, userId.end(), ::isdigit))
+    while (true)
     {
-        cout << "Invalid user id! Please enter a valid user id (Format: U123): ";
         cin >> userId;
         cin.ignore(10000, '\n');
+        if (userId.length() < 2 || userId[0] != 'U' || !all_of(userId.begin() + 1, userId.end(), ::isdigit))
+        {
+            cout << "Invalid user id! Please enter a valid user id (Format: U123): ";
+            continue;
+        }
+        try
+        {
+            return stoi(userId.substr(1));
+        }
+        catch (const std::exception&)
+        {
+            cout << "Could not convert userId to integer! Please enter a valid id: ";
+        }
     }
-    convertedUserId = stoi(userId.substr(1));
-    return convertedUserId;
 }
 
 int LMSController::getValidatedGroupId()
 {
     string groupId;
-    int convertedGroupId = 0;
-    cin >> groupId;
-    cin.ignore(10000, '\n');
-    while (groupId.length() < 2 || groupId[0] != 'G' || !all_of(groupId.begin() + 1, groupId.end(), ::isdigit))
+    while (true)
     {
-        cout << "Invalid group id! Please Enter a valid group id (Format: G123): ";
         cin >> groupId;
         cin.ignore(10000, '\n');
+        if(groupId.length() < 2 || groupId[0] != 'G' || !all_of(groupId.begin() + 1, groupId.end(), ::isdigit))
+        {
+            cout << "Invalid group id! Please Enter a valid group id (Format: G123): ";
+            continue;
+        }
+        try
+        {
+            return stoi(groupId.substr(1));
+        }
+        catch (const std::exception&)
+        {
+            cout << "Could not convert groupId to integer! Please enter a valid id: ";
+        }
     }
-    convertedGroupId = stoi(groupId.substr(1));
-    return convertedGroupId;
 }
 
 int LMSController::getValidatedCourseId()
 {
     string courseId;
-    int convertedCourseId = 0;
-    cin >> courseId;
-    cin.ignore(10000, '\n');
-    while (courseId.length() < 2 || courseId[0] != 'C' || !all_of(courseId.begin() + 1, courseId.end(), ::isdigit))
+    while (true)
     {
-        cout << "Invalid course id! Please Enter a valid course id: ";
         cin >> courseId;
         cin.ignore(10000, '\n');
+        if (courseId.length() < 2 || courseId[0] != 'C' || !all_of(courseId.begin() + 1, courseId.end(), ::isdigit))
+        {
+            cout << "Invalid course id! Please Enter a valid course id: ";
+            continue;
+        }
+        try
+        {
+            return stoi(courseId.substr(1));
+        }
+        catch (const std::exception&)
+        {
+            cout << "Could not convert courseId to integer! Please enter a valid id: ";
+        }
     }
-    convertedCourseId = stoi(courseId.substr(1));
-    return convertedCourseId;
 }
 
 std::string LMSController::getUniqueUsername()
@@ -1205,7 +1226,7 @@ void LMSController::saveAllFiles()
     cout << "\nSaving datas to file........\n" << endl;
     if (!FileManager::saveCoursesToFile(m_courses))
     {
-        cout << "Failed to write ids to file!" << endl;
+        cout << "Failed to write courses to file!" << endl;
     }
     if (!FileManager::saveGroupsToFile(m_groups))
     {

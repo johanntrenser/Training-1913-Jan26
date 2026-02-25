@@ -16,3 +16,5 @@ ID,USERNAME,NAME,PASSWORD,ROLE,STATUS
 15,janardhanan,Janaradhanan A,janar,student,active
 16,niyas,niyas ,niyas,instructor,active
 17,niril,niril,niril,student,active
+18,kumbla,Kumbla,kumbla,student,active
+19,isshin,isshin ,isshin,instructor,active

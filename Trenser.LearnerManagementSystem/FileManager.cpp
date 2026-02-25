@@ -41,10 +41,17 @@ bool FileManager::loadIdsFromFile()
 		getline(currentIds, groupId, ',');
 		getline(currentIds, courseId, ',');
 		getline(currentIds, enrollmentId, ',');
-		User::m_nextUserId = std::stoi(userId);
-		Group::m_nextGroupId = std::stoi(groupId);
-		Course::m_nextCourseId = std::stoi(courseId);
-		Enrollment::m_nextEnrollmentId = std::stoi(enrollmentId);
+		try
+		{
+			User::m_nextUserId = std::stoi(userId);
+			Group::m_nextGroupId = std::stoi(groupId);
+			Course::m_nextCourseId = std::stoi(courseId);
+			Enrollment::m_nextEnrollmentId = std::stoi(enrollmentId);
+		}
+		catch (const std::exception& e)
+		{
+			throw std::runtime_error("Failed to parse IDs from file: " + currentLine);
+		}
 	}
 	idFileReader.close();
 	return true;
@@ -93,7 +100,14 @@ bool FileManager::loadCoursesFromFile(std::vector<std::shared_ptr<Course>>& cour
 		getline(currentCourse, deadline, ',');
 		getline(currentCourse, totalNumberOfModules, ',');
 		getline(currentCourse, status);
-		courses.push_back(std::make_shared<Course>(std::stoi(id.substr(1)), title, deadline, stoi(totalNumberOfModules), status));
+		try
+		{
+			courses.push_back(std::make_shared<Course>(std::stoi(id.substr(1)), title, deadline, stoi(totalNumberOfModules), status));
+		}
+		catch (const std::exception& e)
+		{
+			throw std::runtime_error("Failed to parse IDs from file: " + currentLine);
+		}
 	}
 	fileReader.close();
 	return true;
@@ -149,33 +163,40 @@ bool FileManager::loadGroupsFromFile(std::vector<std::shared_ptr<Group>>& groups
 		getline(currentGroup, name, ',');
 		getline(currentGroup, courseIdString, ',');
 		getline(currentGroup, studentIdsString, ',');
-		std::shared_ptr<Course> course = lmsController.getCourse(stoi(courseIdString.substr(1)));
-		if (course == nullptr)
+		try
 		{
-			std::cout << "Course not found for this group!\n"; 
-			continue; //skip group
-		}
-		int groupId = std::stoi(groupIdString.substr(1));
-		std::shared_ptr<Group> group = std::make_shared<Group>(groupId, name, course);
-		//load students
-		std::stringstream currentStudents(studentIdsString);
-		std::string studentIdString;
-		while (getline(currentStudents, studentIdString, ';'))
-		{
-			if (!studentIdString.empty())
+			std::shared_ptr<Course> course = lmsController.getCourse(stoi(courseIdString.substr(1)));
+			if (course == nullptr)
 			{
-				User* student = lmsController.getUser(std::stoi(studentIdString.substr(1)));
-				if (student != nullptr)
+				std::cout << "Course not found for this group!\n";
+				continue; //skip group
+			}
+			int groupId = std::stoi(groupIdString.substr(1));
+			std::shared_ptr<Group> group = std::make_shared<Group>(groupId, name, course);
+			//load students
+			std::stringstream currentStudents(studentIdsString);
+			std::string studentIdString;
+			while (getline(currentStudents, studentIdString, ';'))
+			{
+				if (!studentIdString.empty())
 				{
-					group->addStudentToGroup(student);
-				}
-				else
-				{
-					std::cout << "Student " << studentIdString << " not found for Group " << name << "!\n";
+					User* student = lmsController.getUser(std::stoi(studentIdString.substr(1)));
+					if (student != nullptr)
+					{
+						group->addStudentToGroup(student);
+					}
+					else
+					{
+						std::cout << "Student " << studentIdString << " not found for Group " << name << "!\n";
+					}
 				}
 			}
+			groups.push_back(group);
 		}
-		groups.push_back(group);
+		catch (const std::exception& e)
+		{
+			throw std::runtime_error("Failed to parse IDs from file: " + currentLine);
+		}
 	}
 	fileReader.close();
 	return true;
@@ -244,32 +265,39 @@ bool FileManager::loadEnrollmentsFromFile(std::vector<std::shared_ptr<Enrollment
 		getline(currentEnrollment, progressString, ',');
 		getline(currentEnrollment, grade, ',');
 		getline(currentEnrollment, groupIdString, ',');
-		User* student = lmsController.getUser(stoi(studentIdString.substr(1)));
-		if (student == nullptr)
+		try
 		{
-			std::cout << "Student " << studentIdString << " not found for Enrollment " << enrollmentIdString << "!\n";
-			continue;
+			User* student = lmsController.getUser(stoi(studentIdString.substr(1)));
+			if (student == nullptr)
+			{
+				std::cout << "Student " << studentIdString << " not found for Enrollment " << enrollmentIdString << "!\n";
+				continue;
+			}
+			std::shared_ptr<Course> course = lmsController.getCourse(stoi(courseIdString.substr(1)));
+			if (course == nullptr)
+			{
+				std::cout << "Course not found for this group!\n";
+				continue; //skip enrollment
+			}
+			std::shared_ptr<Group> group;
+			//if (stoi(groupIdString) == -1)  //throws stoi argument error if groupId is not -1 and of form G1
+			if (groupIdString == "-1")
+			{
+				group = nullptr;
+			}
+			else
+			{
+				group = lmsController.getGroup(stoi(groupIdString.substr(1)));
+			}
+			int enrollmentId = stoi(enrollmentIdString.substr(1));
+			int numberOfCompletedModules = stoi(numberOfCompletedModulesString);
+			int progress = stoi(progressString);
+			enrollments.push_back(std::make_shared<Enrollment>(enrollmentId, student, course, numberOfCompletedModules, progress, grade, group));
 		}
-		std::shared_ptr<Course> course = lmsController.getCourse(stoi(courseIdString.substr(1)));
-		if (course == nullptr)
+		catch (const std::exception& e)
 		{
-			std::cout << "Course not found for this group!\n";
-			continue; //skip enrollment
+			throw std::runtime_error("Failed to parse IDs from file: " + currentLine);
 		}
-		std::shared_ptr<Group> group;
-		//if (stoi(groupIdString) == -1)  //throws stoi argument error if groupId is not -1 and of form G1
-		if (groupIdString == "-1")
-		{
-			group = nullptr;
-		}
-		else
-		{
-			group = lmsController.getGroup(stoi(groupIdString.substr(1)));
-		}
-		int enrollmentId = stoi(enrollmentIdString.substr(1));
-		int numberOfCompletedModules = stoi(numberOfCompletedModulesString);
-		int progress = stoi(progressString);
-		enrollments.push_back(std::make_shared<Enrollment>(enrollmentId, student, course, numberOfCompletedModules, progress, grade, group));
 	}
 	fileReader.close();
 	return true;

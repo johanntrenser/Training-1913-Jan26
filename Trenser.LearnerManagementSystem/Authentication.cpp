@@ -188,7 +188,7 @@ bool Authentication::saveUsersToFile()
 
 bool Authentication::loadUsersAndIds()
 {
-    if (!loadUsersFromFile() && !FileManager::loadIdsFromFile())
+    if (!loadUsersFromFile() || !FileManager::loadIdsFromFile())  //&& operator short circuit . first expression is false.second never executes making loadIds not work.
     {
         return false;
     }
@@ -200,7 +200,7 @@ bool Authentication::loadUsersAndIds()
 
 bool Authentication::saveUsersAndIds()
 {
-    if (!saveUsersToFile() && !FileManager::saveIdsToFile())
+    if (!saveUsersToFile() || !FileManager::saveIdsToFile())
     {
         return false;
     }
